@@ -30,9 +30,7 @@ class DemoApplicationTests {
 
 		System.out.println("Laura Object" + laura);
 
-		customerRepository.save(francesca);
-
-
+		//customerRepository.save(francesca);
 		//Scanner reader = new Scanner();
 
 

@@ -10,7 +10,7 @@ public class Customer {
     //variables to model, define, configure, identify ,etc ...
     // when we create an object
     @Id
-    private Long id;
+    private String id;
     private String firstName;
     private String lastName;
 
@@ -31,7 +31,7 @@ public class Customer {
                 id, firstName, lastName);
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -47,7 +47,7 @@ public class Customer {
         return 10L;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
