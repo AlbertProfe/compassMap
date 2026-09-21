@@ -1,10 +1,15 @@
 package com.example.demo;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Customer {
 
     //fields or attributes
     //variables to model, define, configure, identify ,etc ...
     // when we create an object
+    @Id
     private Long id;
     private String firstName;
     private String lastName;
