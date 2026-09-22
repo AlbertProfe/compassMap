@@ -27,7 +27,7 @@ public class Customer {
     // methods
     public String toString() {
         return String.format(
-                "Customer[id=%d, firstName='%s', lastName='%s']",
+                "Customer[id=%s, firstName='%s', lastName='%s']",
                 id, firstName, lastName);
     }
 

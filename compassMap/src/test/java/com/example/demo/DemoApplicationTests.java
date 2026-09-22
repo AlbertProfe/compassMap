@@ -9,8 +9,10 @@ import java.util.Scanner;
 @SpringBootTest
 class DemoApplicationTests {
 
+	//@Autowired
+	//private CustomerRepository customerRepository;
 	@Autowired
-	private CustomerRepository customerRepository;
+	private CustomerService customerService;
 
 	@Test
 	void contextLoads() {
@@ -35,5 +37,28 @@ class DemoApplicationTests {
 
 
 	}
+
+
+	@Test
+	void createCustomerEntity(){
+
+		Customer laura = new Customer("Laura", "Lopez");
+		System.out.println("Laura Object: " + laura);
+
+		// call the service and sends laura object: customerService.createCustomer(laura)
+		// to save the laura object within a db
+		// the service will do this task
+		// customerService.createCustomer(laura) will return (2):
+		// (1) customerCreated will be an real customer object
+		// (2) null
+		Customer customerCreated = customerService.createCustomer(laura);
+		System.out.println("Laura Created: " + customerCreated);
+
+
+
+
+	}
+
+
 
 }
