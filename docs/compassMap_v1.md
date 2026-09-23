@@ -91,9 +91,9 @@ $ tree
 ```
 
 
-### Java classes
+## Java classes
 
-#### Entities
+### Entities
 
 ```java
 package com.example.demo;
@@ -160,7 +160,28 @@ public class Customer {
 ```
 
 
-#### Command Line Runner
+### Synthetic data
+
+#### Command Line Runner & Java Faker
+
+**Using CommandLineRunner + Java Faker to seed an H2 test database is highly relevant and useful** for `Spring Boot` development, testing, and demos.
+
+> `CommandLineRunner` **runs automatically** after the `Spring` context starts and beans (including repositories) are ready.
+> This makes it ideal for **one-time data initialization**: you inject the repository, create entities, and save them before the application fully serves requests. In the next example `ApartmentPredictorApplication`, it seeds three sample apartments so the in-memory H2 database is never empty on startup. This is especially valuable with H2 because the database is ephemeral—data vanishes when the JVM stops—so you need reliable, automatic population every time the app launches.
+
+**Key benefits:**
+- **Immediate usability**: Controllers, services, and prediction logic can query real data right away without manual SQL scripts or external setup.
+- **Reproducible demos & development**: Developers and stakeholders always see consistent sample apartments (price, area, bedrooms, furnishing status, etc.) instead of an empty database.
+- **Testing support**: Integration tests and exploratory work have data available without extra configuration or `@Sql` scripts.
+- **Zero external dependencies**: Works purely in-memory with H2; no need for a real database during local runs.
+
+**Adding Java Faker elevates this further.** Instead of hard-coding a few static records, Faker generates realistic, varied synthetic data (random but plausible prices, areas, bedroom counts, “yes/no” features, furnishing statuses). You can produce dozens or hundreds of apartments in a few lines of code, covering edge cases and volume that static samples cannot. This improves:
+- Model training / prediction experiments (more diverse training-like data).
+- UI and API testing under realistic load.
+- Avoidance of over-fitting to a tiny hand-written set.
+
+
+#### Example
 
 > The [ApartmentPredictorApplication](cci:2://file:///home/albert/MyProjects/Sandbox/ApartmentPredictorProject/ApartmentPredictor/src/main/java/com/example/apartment_predictor/ApartmentPredictorApplication.java:9:0-126:1) implements `CommandLineRunner`, which <mark>executes code after the Spring Boot application starts</mark>. 
 
@@ -264,7 +285,6 @@ public class ApartmentPredictorApplication implements CommandLineRunner {
 
 }
 ```
-
 
 ## Spring Boot Annotations
 
