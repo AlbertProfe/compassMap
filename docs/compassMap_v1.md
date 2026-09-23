@@ -22,11 +22,12 @@ Projects:
 
 ### Product Goal
 
-**Product Goal**
 
-The 'product goal' is to help learners, developers, and non-technical professionals to accurately identify their current coding/programming profile so they can build a clear, personalized learning roadmap with confidence.
+The `product goal` is to help learners, developers, and non-technical professionals **to accurately identify their current coding/programming profile** so they can build a clear, personalized learning **roadmap** with confidence.
 
-Users answer a short, guided questionnaire focused on two core dimensions: whether they already know how to program and whether they want to learn (or deepen) programming skills. Based on their answers, the system maps them to one of four well-defined profiles drawn from the course matrix (as example):
+**Users answer a short, guided questionnaire** focused on two core dimensions: whether they already know how to program and whether they want to learn (or deepen) programming skills.
+
+Based on their answers, the system maps them to one of four well-defined profiles drawn from the course matrix (as example):
 
 - **Experienced developers** who want to level up in architecture, DDD, best practices and controlled AI use
 - **Practitioners** who already code but prioritize speed and want to leverage AI to ship projects faster
@@ -40,19 +41,19 @@ Once the profile is determined, the application presents a clear description of 
 
 ### Version goal
 
-**Spring Boot Goal (v1)**
-Create a Spring Boot project with a clean data model using H2 in-memory database. Implement entities, repositories and basic configuration only. No controllers, no Thymeleaf/views, no frontend integration in this version — pure backend foundation for the profile assessment system.
+**Spring Boot Goal #1**
+
+Create a `Spring Boot` project with a clean data model using` H2 in-memory database`. Implement `entities`, `repositories` and basic configuration only. No `controllers`, no `Thymeleaf`/views, no frontend integration in this version — pure backend foundation for the profile assessment system.
 
 ## Project
 
-
 ### Create project: Spring Init
 
-- [Spring Init](https://start.spring.io/){.external target='_blank'}
+- [Spring Init](https://start.spring.io/)
 
 ### Commits
 
-- [compassMap project commits on master](https://github.com/AlbertProfe/compassMap/commits/master/){.external target='_blank'}
+- [compassMap project commits on master](https://github.com/AlbertProfe/compassMap/commits/master/)
 
 
 ### Project structure
@@ -271,7 +272,7 @@ public class ApartmentPredictorApplication implements CommandLineRunner {
 
 ## JPA
 
-- [JPA](https://albertprofe.dev/springboot/boot-concepts-jpa.html){.external target='_blank'}
+- [JPA](https://albertprofe.dev/springboot/boot-concepts-jpa.html)
 
 ### application.properties
 
@@ -412,22 +413,17 @@ public interface CustomerRepository extends CrudRepository<Customer, String> {}
 
 ## Tech Stack
 
-- IDE: IntelliJ IDEA 2025.1.3 (Community Edition)
+- IDE: IntelliJ IDEA 2026.1 (Community Edition)
   
   - [Descargar IntelliJ IDEA](https://www.jetbrains.com/es-es/idea/download/?section=linux)
-  
   - With [Installing snap on Ubuntu | Snapcraft documentation](https://snapcraft.io/docs/installing-snap-on-ubuntu): `sudo snap install intellij-idea-community --classic`
 
 - Java 21 (or 25, 17, 11, 8) <mark>open-jdk</mark>
-
 - <mark>JUnit 3.8.1</mark>
-
 - Create project by <mark>Sprint Init</mark>
   
   - Alternative: Maven Project: **`maven-archetype-quickstart` archetype**
-    
     - https://maven.apache.org/
-    
     - mvn --version
       Apache Maven 3.8.7
       Maven home: /usr/share/maven
