@@ -51,6 +51,70 @@ Create a `Spring Boot` project with a clean data model using` H2 in-memory datab
 
 - [Spring Init](https://start.spring.io/)
 
+> `Spring Initializr` **makes bootstrapping a Spring project fast and predictable**.
+
+Here’s a practical guide to create a `Spring Boot` web project with the dependencies we need, using Maven, Java 21, and a smooth path to IDE import (`IntelliJ IDEA`) and initial setup steps.
+
+Start by choosing the right project setup:
+- Type: `Maven` Project
+- Language: `Java`
+- Java: `21`
+- Spring Boot: pick the latest stable 3.x line (for example 3.5.x or newer)
+- Project Metadata: groupId (com.example), artifactId (demo), version (1.0.0), packaging (jar)
+- Dependencies: add Spring Web MVC, Spring Data JPA, Thymeleaf, H2 Console, DevTools, and test stubs as you listed
+  - spring-boot-starter-webmvc
+  - spring-boot-starter-thymeleaf
+  - spring-boot-starter-data-jpa
+  - spring-boot-devtools
+  - com.h2database:h2 (runtime)
+  - spring-boot-starter-thymeleaf-test (test)
+  - spring-boot-starter-webmvc-test (test)
+
+Generate and import:
+- **Click Generate to download** a zip, then unzip.
+- In `IntelliJ IDEA`, choose Import Project, select the `pom.xml`, and let IDEA resolve dependencies. At first run, Maven will download all required artifacts, including transitive dependencies. This may take a few minutes on first setup.
+
+Project structure overview:
+- `src/main/java`: your Java source
+- `src/main/resources`: configuration files, templates, static resources
+- `src/test/java`: tests
+- `pom.xml`: Maven configuration and dependency management
+
+Configure `application.properties`:
+- `src/main/resources/application.properties` (or application.yml)
+- Common settings to start with:
+  - spring.datasource.url=jdbc:h2:mem:testdb
+  - spring.datasource.driver-class-name=org.h2.Driver
+  - spring.datasource.username=sa
+  - spring.datasource.password=
+  - spring.jpa.hibernate.ddl-auto=update
+  - spring.h2.console.enabled=true
+  - server.port=8080
+These enable an **`in-memory H2` database and the web-based console at `/h2-console`**.
+
+### Mini project setup
+
+Create a simple data model and repository:
+- Define an entity, for example, a User with id, name, and email.
+- Use JPA annotations: @Entity, @Id, @GeneratedValue, etc.
+- Create a Spring Data JPA repository interface, e.g., UserRepository extends JpaRepository<User, Long>.
+- This provides CRUD operations out of the box.
+
+Expose a minimal controller with Thymeleaf views:
+- Create a Spring MVC controller to handle HTTP requests, e.g., show a list of users and a form to add a new user.
+- Use @Controller and @GetMapping, @PostMapping.
+- Add a Thymeleaf template under src/main/resources/templates, such as users.html, to render pages without manual HTML assembly.
+- Thymeleaf is included via the thymeleaf starter; use standard th:* attributes to bind data.
+
+Enable H2 Console:
+- Access http://localhost:8080/h2-console after the app starts, using JDBC URL jdbc:h2:mem:testdb, with default credentials (sa/empty), to inspect the in-memory database during development.
+
+Watch for common pitfalls:
+- Ensure your pom.xml aligns with Java 21 compatibility. If you see dependency resolution issues, refresh Maven in IDEA and reimport.
+- If the H2 console reports missing schema, verify that spring-boot-starter-data-jpa pulls in a compatible JPA provider and that your entities are properly scanned (package structure).
+- When running tests, include spring-boot-starter-test or specific test dependencies; the current list includes test siblings, so expect a clean test harness.
+
+
 ### Commits
 
 - [compassMap project commits on master](https://github.com/AlbertProfe/compassMap/commits/master/)
@@ -183,7 +247,7 @@ public class Customer {
 
 #### Example
 
-> The [ApartmentPredictorApplication](cci:2://file:///home/albert/MyProjects/Sandbox/ApartmentPredictorProject/ApartmentPredictor/src/main/java/com/example/apartment_predictor/ApartmentPredictorApplication.java:9:0-126:1) implements `CommandLineRunner`, which <mark>executes code after the Spring Boot application starts</mark>. 
+> The [ApartmentPredictorApplication](cci:2://file:///home/albert/MyProjects/Sandbox/ApartmentPredictorProject/ApartmentPredictor/src/main/java/com/example/apartment_predictor/ApartmentPredictorApplication.java:9:0-126:1) implements `CommandLineRunner`, which <mark>executes code after the Spring Boot application starts</mark>.
 
 The **CommandLineRunner** serves as a data initialization mechanism, populating the database with test data upon application startup.
 
@@ -322,7 +386,7 @@ spring.jpa.hibernate.ddl-auto=update
 public interface CustomerRepository extends CrudRepository<Customer, String> {}
 ```
 
->This Spring Data interface provides full CRUD operations for the `Customer` entity using a `String` primary key. 
+>This Spring Data interface provides full CRUD operations for the `Customer` entity using a `String` primary key.
 
 By extending `CrudRepository`, it automatically offers methods to `save`, `find` by ID, `find all`, `count`, and `delete` customers without writing any implementation code.
 
@@ -434,14 +498,14 @@ public interface CustomerRepository extends CrudRepository<Customer, String> {}
 ## Tech Stack
 
 - IDE: IntelliJ IDEA 2026.1 (Community Edition)
-  
+
   - [Descargar IntelliJ IDEA](https://www.jetbrains.com/es-es/idea/download/?section=linux)
   - With [Installing snap on Ubuntu | Snapcraft documentation](https://snapcraft.io/docs/installing-snap-on-ubuntu): `sudo snap install intellij-idea-community --classic`
 
 - Java 21 (or 25, 17, 11, 8) <mark>open-jdk</mark>
 - <mark>JUnit 3.8.1</mark>
 - Create project by <mark>Sprint Init</mark>
-  
+
   - Alternative: Maven Project: **`maven-archetype-quickstart` archetype**
     - https://maven.apache.org/
     - mvn --version
@@ -450,5 +514,3 @@ public interface CustomerRepository extends CrudRepository<Customer, String> {}
       Java version: 21.0.8, vendor: Ubuntu, runtime: /usr/lib/jvm/java-21-openjdk-amd64
       Default locale: en_US, platform encoding: UTF-8
       OS name: "linux", version: "6.8.0-83-generic", arch: "amd64", family: "unix"
-
-
