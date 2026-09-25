@@ -62,13 +62,13 @@ Start by choosing the right project setup:
 - Spring Boot: pick the latest stable 3.x line (for example 3.5.x or newer)
 - Project Metadata: groupId (com.example), artifactId (demo), version (1.0.0), packaging (jar)
 - Dependencies: add Spring Web MVC, Spring Data JPA, Thymeleaf, H2 Console, DevTools, and test stubs as you listed
-  - spring-boot-starter-webmvc
-  - spring-boot-starter-thymeleaf
-  - spring-boot-starter-data-jpa
-  - spring-boot-devtools
-  - com.h2database:h2 (runtime)
-  - spring-boot-starter-thymeleaf-test (test)
-  - spring-boot-starter-webmvc-test (test)
+  - `spring-boot-starter-webmvc`
+  - `spring-boot-starter-thymeleaf`
+  - `spring-boot-starter-data-jpa`
+  - `spring-boot-devtools`
+  - `com.h2database:h2 (runtime)`
+  - `spring-boot-starter-thymeleaf-test (test)`
+  - `spring-boot-starter-webmvc-test (test)`
 
 Generate and import:
 - **Click Generate to download** a zip, then unzip.
@@ -90,28 +90,29 @@ Configure `application.properties`:
   - spring.jpa.hibernate.ddl-auto=update
   - spring.h2.console.enabled=true
   - server.port=8080
+
 These enable an **`in-memory H2` database and the web-based console at `/h2-console`**.
 
 ### Mini project setup
 
-Create a simple data model and repository:
-- Define an entity, for example, a User with id, name, and email.
-- Use JPA annotations: @Entity, @Id, @GeneratedValue, etc.
-- Create a Spring Data JPA repository interface, e.g., UserRepository extends JpaRepository<User, Long>.
-- This provides CRUD operations out of the box.
+Create a simple `data model` and `repository`:
+- Define an entity, for example, a `User/Customer` with id, name, and email.
+- Use `JPA` `annotations`: `@Entity`, `@Id`, `@GeneratedValue`, etc.
+- Create a `Spring Data JPA` `repository` interface, e.g., `UserRepository` extends `JpaRepository<User, Long>`.
+- This provides `CRUD` operations out of the box.
 
-Expose a minimal controller with Thymeleaf views:
-- Create a Spring MVC controller to handle HTTP requests, e.g., show a list of users and a form to add a new user.
-- Use @Controller and @GetMapping, @PostMapping.
-- Add a Thymeleaf template under src/main/resources/templates, such as users.html, to render pages without manual HTML assembly.
-- Thymeleaf is included via the thymeleaf starter; use standard th:* attributes to bind data.
+Expose a minimal **controller** with `Thymeleaf` views:
+- Create a **Spring MVC controller** to handle HTTP requests, e.g., show a list of users and a form to add a new user.
+- Use `@Controller` and `@GetMapping`, `@PostMapping`.
+- Add a `Thymeleaf` template under `src/main/resources/templates`, such as `users.html`, to render pages without manual HTML assembly.
+- `Thymeleaf` is included via the `thymeleaf` starter; use standard `th:*` attributes to bind data.
 
-Enable H2 Console:
-- Access http://localhost:8080/h2-console after the app starts, using JDBC URL jdbc:h2:mem:testdb, with default credentials (sa/empty), to inspect the in-memory database during development.
+Enable `H2` Console:
+- Access `http://localhost:8080/h2-console` after the app starts, using `JDBC` URL `jdbc:h2:mem:testdb`, with default credentials (sa/empty), to inspect the in-memory database during development.
 
-Watch for common pitfalls:
-- Ensure your pom.xml aligns with Java 21 compatibility. If you see dependency resolution issues, refresh Maven in IDEA and reimport.
-- If the H2 console reports missing schema, verify that spring-boot-starter-data-jpa pulls in a compatible JPA provider and that your entities are properly scanned (package structure).
+Watch for common **pitfalls**:
+- Ensure your `pom.xml` aligns with `Java 21` compatibility. If you see dependency resolution issues, refresh Maven in IDEA and reimport.
+- If the H2 console reports missing schema, verify that `spring-boot-starter-data-jpa` pulls in a compatible `JPA` provider and that your entities are properly scanned (package structure).
 - When running tests, include spring-boot-starter-test or specific test dependencies; the current list includes test siblings, so expect a clean test harness.
 
 
@@ -497,7 +498,7 @@ public interface CustomerRepository extends CrudRepository<Customer, String> {}
 
 ## Tech Stack
 
-- IDE: IntelliJ IDEA 2026.1 (Community Edition)
+- IDE: IntelliJ IDEA 2026.2.3 (Community Edition)
 
   - [Descargar IntelliJ IDEA](https://www.jetbrains.com/es-es/idea/download/?section=linux)
   - With [Installing snap on Ubuntu | Snapcraft documentation](https://snapcraft.io/docs/installing-snap-on-ubuntu): `sudo snap install intellij-idea-community --classic`
