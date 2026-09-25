@@ -42,14 +42,14 @@ class DemoApplicationTests {
 	@Test
 	void createCustomerEntity(){
 
-		Customer laura = new Customer("Laura", "Lopez");
+		Customer laura = new Customer("Laura Maria", "Lopez Gasol");
 		System.out.println("Laura Object: " + laura);
 
 		// call the service and sends laura object: customerService.createCustomer(laura)
 		// to save the laura object within a db
 		// the service will do this task
 		// customerService.createCustomer(laura) will return (2):
-		// (1) customerCreated will be an real customer object
+		// (1) customerCreated will be a real customer object
 		// (2) null
 		Customer customerCreated = customerService.createCustomer(laura);
 		System.out.println("Laura Created: " + customerCreated);
