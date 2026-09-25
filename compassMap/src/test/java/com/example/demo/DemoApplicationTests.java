@@ -54,9 +54,24 @@ class DemoApplicationTests {
 		Customer customerCreated = customerService.createCustomer(laura);
 		System.out.println("Laura Created: " + customerCreated);
 
+	}
+
+	@Test
+	void findCustomerById (){
+
+		Customer customerFound1 = customerService.getCustomerById("8b4ca0f7-5de0-4ab2-a431-a849f158cd62");
+		System.out.println("Customer found 1 : " + customerFound1 );
+
+		Customer customerFound2 = customerService.getCustomerById("banana");
+		System.out.println("Customer found 2 : " + customerFound2 );
 
 
+	}
 
+	@Test
+	void deleteCustomerById(){
+
+		customerService.deleteCustomer("8b4ca0f7-5de0-4ab2-a431-a849f158cd62");
 	}
 
 

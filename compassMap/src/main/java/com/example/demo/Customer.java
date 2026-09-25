@@ -17,8 +17,14 @@ public class Customer {
 
     //constructor
     //we use to instantiate the class
+    // empty constructor
+    // we create an empty object
     protected Customer() {}
 
+    // we create a two-field object,
+    // in this particular case without id
+    // the id is given at backend, service, UUID
+    // ALWAYS a string
     public Customer(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -58,4 +64,6 @@ public class Customer {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+
 }

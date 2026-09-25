@@ -3,6 +3,7 @@ package com.example.demo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -22,12 +23,18 @@ public class CustomerService {
         return createdCustomer;
     }
 
-
     public void deleteCustomer (String id){
 
       customerRepository.deleteById(id);
 
 
+    }
+
+    public Customer getCustomerById(String id){
+
+        Optional<Customer> foundCustomer = customerRepository.findById(id);
+
+        return foundCustomer.get();
     }
 
 
