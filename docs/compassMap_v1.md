@@ -229,10 +229,13 @@ public class Customer {
 
 #### Command Line Runner & Java Faker
 
+- [Java Faker](https://github.com/DiUS/java-faker)
+
 **Using CommandLineRunner + Java Faker to seed an H2 test database is highly relevant and useful** for `Spring Boot` development, testing, and demos.
 
 > `CommandLineRunner` **runs automatically** after the `Spring` context starts and beans (including repositories) are ready.
-> This makes it ideal for **one-time data initialization**: you inject the repository, create entities, and save them before the application fully serves requests. In the next example `ApartmentPredictorApplication`, it seeds three sample apartments so the in-memory H2 database is never empty on startup. This is especially valuable with H2 because the database is ephemeral—data vanishes when the JVM stops—so you need reliable, automatic population every time the app launches.
+> This makes it ideal for **one-time data initialization**: you inject the repository, create entities, and save them before the application fully serves requests.
+> In the next example `ApartmentPredictorApplication`, it seeds three sample apartments so the in-memory H2 database is never empty on startup. This is especially valuable with H2 because the database is ephemeral—data vanishes when the JVM stops—so you need reliable, automatic population every time the app launches.
 
 **Key benefits:**
 - **Immediate usability**: Controllers, services, and prediction logic can query real data right away without manual SQL scripts or external setup.
