@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -72,6 +73,33 @@ class DemoApplicationTests {
 	void deleteCustomerById(){
 
 		customerService.deleteCustomer("8b4ca0f7-5de0-4ab2-a431-a849f158cd62");
+	}
+
+
+	@Test
+	void javaFakerCreateObjects(){
+
+
+		Faker faker = new Faker();
+
+		//String name = faker.name().fullName(); // Miss Samanta Schmidt
+		//String firstName = faker.name().firstName(); // Emory
+		//String lastName = faker.name().lastName(); // Barton
+
+		//String streetAddress = faker.address().streetAddress(); // 60018 Sawayn Brooks Suite 449
+
+		//String titleBook = faker.book().title();
+
+		Customer newCustomer = new Customer();
+
+		for (int i= 0; i < 1000; i++){
+
+			// id?
+			newCustomer.setFirstName( faker.name().firstName()  );
+			newCustomer.setLastName(  faker.name().lastName());
+
+			customerService.createCustomer(newCustomer);
+		}
 	}
 
 
