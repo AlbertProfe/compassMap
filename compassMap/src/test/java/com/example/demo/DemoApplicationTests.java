@@ -1,11 +1,11 @@
 package com.example.demo;
 
+import com.example.demo.model.Customer;
+import com.example.demo.service.CustomerService;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Scanner;
 
 @SpringBootTest
 class DemoApplicationTests {
@@ -43,6 +43,8 @@ class DemoApplicationTests {
 	@Test
 	void createCustomerEntity(){
 
+
+
 		Customer laura = new Customer("Laura Maria", "Lopez Gasol");
 		System.out.println("Laura Object: " + laura);
 
@@ -60,7 +62,7 @@ class DemoApplicationTests {
 	@Test
 	void findCustomerById (){
 
-		Customer customerFound1 = customerService.getCustomerById("8b4ca0f7-5de0-4ab2-a431-a849f158cd62");
+		Customer customerFound1 = customerService.getCustomerById("64c7be39-d974-419f-a766-a6063346676b");
 		System.out.println("Customer found 1 : " + customerFound1 );
 
 		Customer customerFound2 = customerService.getCustomerById("banana");

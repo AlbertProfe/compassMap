@@ -1,6 +1,6 @@
-package com.example.demo;
+package com.example.demo.repository;
 
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import com.example.demo.model.Customer;
 import org.springframework.data.repository.CrudRepository;
 
 
