@@ -47,6 +47,8 @@ Create a `Spring Boot` project with a clean data model using` H2 in-memory datab
 
 ## Project
 
+Here, we mange the code project.
+
 ### Create project: Spring Init
 
 - [Spring Init](https://start.spring.io/)
