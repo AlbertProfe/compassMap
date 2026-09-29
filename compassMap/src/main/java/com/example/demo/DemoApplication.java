@@ -15,6 +15,7 @@ public class DemoApplication  implements CommandLineRunner {
 	PopulatorDB populatorDB;
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
