@@ -20,46 +20,6 @@ class DemoApplicationTests {
 	}
 
 	@Test
-	void createCustomerObjects(){
-
-		Customer francesca  = new Customer();
-		Customer andres = new Customer();
-		Customer cesar = new Customer();
-
-		cesar.getALotOfMoney();
-
-		Customer laura = new Customer("Laura", "Sol");
-		francesca.setFirstName("Francesca");
-
-		System.out.println("Laura Object" + laura);
-
-		//customerRepository.save(francesca);
-		//Scanner reader = new Scanner();
-
-
-	}
-
-
-	@Test
-	void createCustomerEntity(){
-
-
-
-		Customer laura = new Customer("Laura Maria", "Lopez Gasol");
-		System.out.println("Laura Object: " + laura);
-
-		// call the service and sends laura object: customerService.createCustomer(laura)
-		// to save the laura object within a db
-		// the service will do this task
-		// customerService.createCustomer(laura) will return (2):
-		// (1) customerCreated will be a real customer object
-		// (2) null
-		Customer customerCreated = customerService.createCustomer(laura);
-		System.out.println("Laura Created: " + customerCreated);
-
-	}
-
-	@Test
 	void findCustomerById (){
 
 		Customer customerFound1 = customerService.getCustomerById("64c7be39-d974-419f-a766-a6063346676b");
