@@ -5,6 +5,7 @@ import com.example.demo.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,6 +40,8 @@ public class CustomerService {
         return foundCustomer.get();
     }
 
-
+    public void saveAll(ArrayList<Customer> customers) {
+        customerRepository.saveAll(customers);
+    }
 
 }

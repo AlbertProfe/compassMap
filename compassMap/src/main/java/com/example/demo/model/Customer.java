@@ -2,8 +2,16 @@ package com.example.demo.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Customer {
 
     //fields or attributes
@@ -13,56 +21,15 @@ public class Customer {
     private String id;
     private String firstName;
     private String lastName;
-
-
-    //constructor
-    //we use to instantiate the class
-    // empty constructor
-    // we create an empty object
-    protected Customer() {}
-
-    // we create a two-field object,
-    // in this particular case without id
-    // the id is given at backend, service, UUID
-    // ALWAYS a string
-    public Customer(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
+    private String email;
+    private String phone;
+    private String address;
 
     // methods
     public String toString() {
         return String.format(
                 "Customer[id=%s, firstName='%s', lastName='%s']",
                 id, firstName, lastName);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public Long getALotOfMoney(){
-        return 10L;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
 
