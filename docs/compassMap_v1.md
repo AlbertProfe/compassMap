@@ -155,6 +155,41 @@ $ tree
                     └── DemoApplicationTests.java
 
 14 directories, 10 files
+
+
+[Tue Sep 29 08:21:00] albert@albert-VirtualBox:~/MyProjects/SpringProjects/compassMap/compassMap/src (master)
+$ tree
+.
+├── main
+│   ├── java
+│   │   └── com
+│   │       └── example
+│   │           └── demo
+│   │               ├── DemoApplication.java
+│   │               ├── controller
+│   │               │   └── HomeController.java
+│   │               ├── model
+│   │               │   ├── Customer.java
+│   │               │   └── RoadMap.java
+│   │               ├── repository
+│   │               │   └── CustomerRepository.java
+│   │               └── service
+│   │                   └── CustomerService.java
+│   └── resources
+│       ├── application.properties
+│       ├── static
+│       └── templates
+│           ├── home1.html
+│           └── home2.html
+└── test
+    └── java
+        └── com
+            └── example
+                └── demo
+                    └── DemoApplicationTests.java
+
+18 directories, 10 files
+
 ```
 
 
@@ -232,6 +267,8 @@ public class Customer {
 #### Command Line Runner & Java Faker
 
 - [Java Faker](https://github.com/DiUS/java-faker)
+- [6 approaches](https://github.com/AlbertProfe/compassMap/blob/master/docs/appends/synthetic-data-algorithm-approaches.md)
+- Apartment example: [Populate](https://github.com/AlbertProfe/ApartmentPredictor/blob/master/ApartmentPredictor/src/main/java/com/example/apartment_predictor/utils/PopulateDB.java) / [CommandLineRunner](https://github.com/AlbertProfe/ApartmentPredictor/blob/master/ApartmentPredictor/src/main/java/com/example/apartment_predictor/ApartmentPredictorApplication.java)
 
 **Using CommandLineRunner + Java Faker to seed an H2 test database is highly relevant and useful** for `Spring Boot` development, testing, and demos.
 
@@ -245,10 +282,23 @@ public class Customer {
 - **Testing support**: Integration tests and exploratory work have data available without extra configuration or `@Sql` scripts.
 - **Zero external dependencies**: Works purely in-memory with H2; no need for a real database during local runs.
 
-**Adding Java Faker elevates this further.** Instead of hard-coding a few static records, Faker generates realistic, varied synthetic data (random but plausible prices, areas, bedroom counts, “yes/no” features, furnishing statuses). You can produce dozens or hundreds of apartments in a few lines of code, covering edge cases and volume that static samples cannot. This improves:
-- Model training / prediction experiments (more diverse training-like data).
-- UI and API testing under realistic load.
+**Adding Java Faker elevates this further.** Instead of hard-coding a few static records, Faker generates realistic, varied synthetic data (random but plausible prices, areas, bedroom counts, “yes/no” features, furnishing statuses). You can produce dozens or hundreds of apartments in a few lines of code, covering edge cases and volume that static samples cannot.
+
+This improves:
+- *Model training / prediction experiments* (more diverse training-like data).
+- *UI and API testing* under realistic load.
 - Avoidance of over-fitting to a tiny hand-written set.
+
+#### Synthetic Data for CompassMap
+
+**(1)** Realistic test data reveals edge cases, performance limits, and UX issues that simplified mocks miss, enabling reliable validation before production.
+
+**(2)**  
+- **Synthetic**: Generated (e.g., via Faker) to mimic real names without privacy risk.  
+- **Seed**: Fixed, curated starter set for consistent demos and tests.  
+- **Production**: Live user data—never used in testing due to sensitivity and variability.
+
+**(3)** Minimum dataset for the customer domain: ~100–1000 customer entities.
 
 
 #### Example
@@ -486,6 +536,11 @@ public interface CustomerRepository extends CrudRepository<Customer, String> {}
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webmvc-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.javafaker</groupId>
+			<artifactId>javafaker</artifactId>
+			<version>1.0.2</version>
 		</dependency>
 	</dependencies>
 
