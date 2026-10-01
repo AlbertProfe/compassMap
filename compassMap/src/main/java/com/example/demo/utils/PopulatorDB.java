@@ -14,17 +14,16 @@ import java.util.UUID;
 
 @Component
 public class PopulatorDB {
-    // scope#1
+
     @Autowired
     CustomerService customerService;
 
     public List<Customer> createAndSaveCustomer (int qty){
-        // scope#2
+
         ArrayList<Customer> customers = new ArrayList<>();
         Faker faker = new Faker();
 
         for (int i = 0; i < qty; i++) {
-            // scope#3
             //customers.add(buildFakeCustomer(faker));
             customers.add(new Customer(
                     UUID.randomUUID().toString(),
@@ -50,12 +49,6 @@ public class PopulatorDB {
                 .build();
     }
 
-    public void myMethod2(){
-        // scope#4
-    }
 
-    public static void myMethod3(){
-        // scope#5
-    }
 
 }
