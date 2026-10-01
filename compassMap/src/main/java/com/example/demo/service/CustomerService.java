@@ -44,4 +44,12 @@ public class CustomerService {
         customerRepository.saveAll(customers);
     }
 
+    public void deleteAllCustomers() {
+        customerRepository.deleteAll();
+    }
+
+    public long countCustomers() {
+        return customerRepository.count();
+    }
+
 }
