@@ -27,7 +27,7 @@ public class BackOffice {
                     customerLoop(scan, populatorDB);
                     break;
                 case "2":
-                    System.out.println("Roadmap - not implemented yet.");
+                    roadMapLoop(scan,populatorDB);
                     break;
                 case "3":
                     System.out.println("Profile - not implemented yet.");
@@ -76,16 +76,8 @@ public class BackOffice {
         }
     }
 
-    public static void roadMapLoop(Scanner scan){
-        while(true){
-            String option = askMenuOption(scan);
-            switch (option){
-                // we should implement the option for roadMap entity
-                // populate the roadMap table with synthetic data
-                // and call the roadMap service to delete and count
-            }
-        }
-    }
+
+
 
     public static void customerMenu() {
         System.out.println("\n===== CUSTOMER MENU =====");
@@ -111,5 +103,50 @@ public class BackOffice {
         return option;
     }
 
+    /*
+    *
+    *  RoadMap Section
+    *
+     */
+
+
+    public static void roadMapLoop(Scanner scan, PopulatorDB populatorDB){
+        boolean inRoadMapMenu = true;
+        while (inRoadMapMenu) {
+            roadMapMenu();
+            String roadOption = scan.nextLine();//askMenuOption(scan);
+            switch (roadOption){
+                // we should implement the option for roadMap entity
+                // populate the roadMap table with synthetic data
+                // and call the roadMap service to delete and count
+                case "1":
+                    System.out.print("Select option :  ");
+                case "2":
+                    String id = scan.nextLine();
+                    populatorDB.roadMapService.deleteRoadMap(id);
+                    System.out.println("Customer " + id + " deleted.");
+                    break;
+                case "3":
+                    System.out.print(" Not implemented yet  ");
+                case "4":
+                    System.out.print("Select option :  ");
+                case "5":
+                    System.out.print("Select option :  ");
+                    inRoadMapMenu = false;
+                    break;
+                default:
+                    System.out.println("Invalid option, try again.");
+            }
+        }
+    }
+
+    public static void roadMapMenu() {
+        System.out.println("\n===== ROADMAP MENU =====");
+        System.out.println("1. Create roadmap");
+        System.out.println("2. Delete roadmap");
+        System.out.println("3. Delete all roadmap");
+        System.out.println("4. Count roadmap");
+        System.out.println("5. Quit");
+    }
 
 }
