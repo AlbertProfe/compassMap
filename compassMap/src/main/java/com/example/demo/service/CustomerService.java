@@ -5,8 +5,6 @@ import com.example.demo.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,11 +38,11 @@ public class CustomerService {
 
         Optional<Customer> foundCustomer = customerRepository.findById(id);
 
-        return foundCustomer.get();
+        return foundCustomer.orElse(null);
     }
 
-    public void saveAll(ArrayList<Customer> customers) {
-        customerRepository.saveAll(customers);
+    public Iterable<Customer> saveAll(Iterable<Customer> customers) {
+        return customerRepository.saveAll(customers);
     }
 
     public void deleteAllCustomers() {
@@ -55,4 +53,30 @@ public class CustomerService {
         return customerRepository.count();
     }
 
+    public Customer updateCustomer(Customer incoming) {
+        if (incoming.getId() == null) {
+            return null;
+        }
+        Customer existing = getCustomerById(incoming.getId());
+        if (existing == null) {
+            return null;
+        }
+        // merge only non-null fields from incoming (partial update semantics)
+        if (incoming.getFirstName() != null) {
+            existing.setFirstName(incoming.getFirstName());
+        }
+        if (incoming.getLastName() != null) {
+            existing.setLastName(incoming.getLastName());
+        }
+        if (incoming.getEmail() != null) {
+            existing.setEmail(incoming.getEmail());
+        }
+        if (incoming.getPhone() != null) {
+            existing.setPhone(incoming.getPhone());
+        }
+        if (incoming.getAddress() != null) {
+            existing.setAddress(incoming.getAddress());
+        }
+        return customerRepository.save(existing);
+    }
 }

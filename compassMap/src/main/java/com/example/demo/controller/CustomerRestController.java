@@ -12,10 +12,37 @@ import org.springframework.web.bind.annotation.*;
 // it is used to map the HTTP requests to the methods in the controller
 @RequestMapping("/api/v1/customers")
 public class CustomerRestController {
-
+    // Autowired is an annotation that marks the field as a dependency
     @Autowired
     private CustomerService customerService;
 
+    //----------------------------- CREATE -----------------------------
+    @PostMapping("/create")
+    public Customer createCustomer(@RequestBody Customer customer) {
+        Customer newCustomer = customerService.createCustomer(customer);
+        System.out.println("Service createCustomer: " + newCustomer);
+        return newCustomer;
+    }
+
+    @PostMapping("/createAll")
+    public Iterable<Customer> createAllCustomers(@RequestBody Iterable<Customer> customers) {
+        Iterable<Customer> newCustomers = customerService.saveAll(customers);
+        System.out.println("Service createAllCustomers: " + customers);
+        return newCustomers;
+    }
+
+    //----------------------------- UPDATE -----------------------------
+    @PutMapping("/update")
+    public Customer updateCustomer(@RequestBody Customer customer) {
+        if (customer.getId() == null || customerService.getCustomerById(customer.getId()) == null) {
+            return null;
+        }
+        Customer updatedCustomer = customerService.updateCustomer(customer);
+        System.out.println("Service updateCustomer: " + updatedCustomer);
+        return updatedCustomer;
+    }
+
+    //----------------------------- GET -----------------------------
     @GetMapping("/getAll")
     public Iterable<Customer> getAllCustomers() {
         // call service to get all customers and return them
@@ -38,9 +65,16 @@ public class CustomerRestController {
         return count;
     }
 
+    //----------------------------- DELETE -----------------------------
     @DeleteMapping("/byId")
-    public void deleteById(@RequestParam String id) {
-       customerService.deleteCustomer(id);
+    public Customer deleteById(@RequestParam String id) {
+       Customer foundCustomer = customerService.getCustomerById(id);
+       if (foundCustomer == null) return null;
+       else {
+           customerService.deleteCustomer(id);
+           return foundCustomer;
+       }
+
     }
 
     @DeleteMapping("/all")
