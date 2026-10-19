@@ -4,7 +4,6 @@
 
 ### References
 
-
 - Microservices: [Spring IO](https://spring.io/)
 - Spring Boot is open-source: [GitHub - spring-projects/spring-boot: Spring Boot helps you to create Spring-powered, production-grade applications and services with absolute minimum fuss.](https://github.com/spring-projects/spring-boot)
 - Spring Boot Guides / Academy: [Spring Guides](https://spring.io/guides) / [Spring Academy](https://spring.academy/courses)
@@ -43,11 +42,11 @@ Once the profile is determined, the application presents a clear description of 
 
 **Spring Boot Goal #1**
 
-Create a `Spring Boot` project with a clean data model using` H2 in-memory database`. Implement `entities`, `repositories` and basic configuration only. No `controllers`, no `Thymeleaf`/views, no frontend integration in this version — pure backend foundation for the profile assessment system.
+Create a `Spring Boot` project with a clean data model using` H2 in-memory database`. Implement `entities`, `repositories` and basic configuration only. No `controllers`, no `Thymeleaf`/views, no frontend integration in this version — pure backend foundation for the profile assessment system (exposing REST endpoints).
 
 ## Project
 
-Here, we mange the code project.
+Here, we manage the code project.
 
 ### Create project: Spring Init
 
@@ -102,6 +101,12 @@ Create a simple `data model` and `repository`:
 - Use `JPA` `annotations`: `@Entity`, `@Id`, `@GeneratedValue`, etc.
 - Create a `Spring Data JPA` `repository` interface, e.g., `UserRepository` extends `JpaRepository<User, Long>`.
 - This provides `CRUD` operations out of the box.
+
+Expose domains with `@RestController`:
+- Create a **Spring REST controller** to handle HTTP requests, e.g., show a list of users and a form to add a new user.
+- Use `@RestController` and `@GetMapping`, `@PostMapping`.
+- Update `@Service` to handle business logic.
+- Update `@Repository` to handle data access logic.
 
 Expose a minimal **controller** with `Thymeleaf` views:
 - Create a **Spring MVC controller** to handle HTTP requests, e.g., show a list of users and a form to add a new user.
@@ -190,6 +195,45 @@ $ tree
 
 18 directories, 10 files
 
+
+[Mon Oct 19 11:52:23] albert@albert-VirtualBox:~/MyProjects/SpringProjects/compassMap/compassMap/src (master)
+$ tree
+.
+├── main
+│   ├── java
+│   │   └── com
+│   │       └── example
+│   │           └── demo
+│   │               ├── controller
+│   │               │   ├── CustomerRestController.java
+│   │               │   └── HomeController.java
+│   │               ├── DemoApplication.java
+│   │               ├── model
+│   │               │   ├── Customer.java
+│   │               │   └── RoadMap.java
+│   │               ├── repository
+│   │               │   └── CustomerRepository.java
+│   │               ├── service
+│   │               │   └── CustomerService.java
+│   │               └── utils
+│   │                   ├── BackOffice.java
+│   │                   └── PopulatorDB.java
+│   └── resources
+│       ├── application.properties
+│       ├── static
+│       └── templates
+│           ├── home1.html
+│           └── home2.html
+└── test
+    └── java
+        └── com
+            └── example
+                └── demo
+                    └── DemoApplicationTests.java
+
+19 directories, 13 files
+
+
 ```
 
 
@@ -204,61 +248,39 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Customer {
 
-    //fields or attributes
-    //variables to model, define, configure, identify ,etc ...
-    // when we create an object
-    @Id
-    private String id;
-    private String firstName;
-    private String lastName;
+  @Id
+  private String id;
+  private String firstName;
+  private String lastName;
+  private String email;
+  private String phone;
+  private String address;
 
-
-    //constructor
-    //we use to instantiate the class
-    protected Customer() {}
-
-    public Customer(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    // methods
-    public String toString() {
-        return String.format(
-                "Customer[id=%s, firstName='%s', lastName='%s']",
-                id, firstName, lastName);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public Long getALotOfMoney(){
-        return 10L;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+  // ....
 }
+
+@Entity
+public class RoadMap {
+
+    //fields
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+    private String name;
+    private String description;
+    private int steps;
+    private boolean completed;
+    
+    //...
+}
+
+
 ```
 
 
@@ -456,6 +478,9 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface CustomerRepository extends CrudRepository<Customer, String> {}
 ```
+## Rest
+
+- [Postman: /customer](https://documenter.getpostman.com/view/7473960/2sBYHSy1U9)
 
 ## Maven
 
@@ -469,91 +494,97 @@ public interface CustomerRepository extends CrudRepository<Customer, String> {}
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.1.1</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>demo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
-	<properties>
-		<java.version>21</java.version>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-h2console</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.1.1</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+  <groupId>com.example</groupId>
+  <artifactId>demo</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name/>
+  <description/>
+  <url/>
+  <licenses>
+    <license/>
+  </licenses>
+  <developers>
+    <developer/>
+  </developers>
+  <scm>
+    <connection/>
+    <developerConnection/>
+    <tag/>
+    <url/>
+  </scm>
+  <properties>
+    <java.version>21</java.version>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-h2console</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webmvc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.github.javafaker</groupId>
-			<artifactId>javafaker</artifactId>
-			<version>1.0.2</version>
-		</dependency>
-	</dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <scope>runtime</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webmvc-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.github.javafaker</groupId>
+      <artifactId>javafaker</artifactId>
+      <version>1.0.2</version>
+    </dependency>
+  </dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
+
 ```
 
 ## Tech Stack
@@ -566,6 +597,7 @@ public interface CustomerRepository extends CrudRepository<Customer, String> {}
 - Java 21 (or 25, 17, 11, 8) <mark>open-jdk</mark>
 - <mark>JUnit 3.8.1</mark>
 - Create project by <mark>Sprint Init</mark>
+- Lombok, Java Faker, Thymeleaf, H2, JPA
 
   - Alternative: Maven Project: **`maven-archetype-quickstart` archetype**
     - https://maven.apache.org/
