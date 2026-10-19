@@ -14,13 +14,13 @@ public class RoadMap {
     private String id;
     private String name;
     private String description;
-    private int steps;
-    private boolean completed;
+    private Integer steps;
+    private Boolean completed;
 
     //constructor
     public RoadMap() {}
 
-    public RoadMap(String name, String description, int steps, boolean completed) {
+    public RoadMap(String name, String description, Integer steps, Boolean completed) {
         this.name = name;
         this.description = description;
         this.steps = steps;
@@ -52,26 +52,26 @@ public class RoadMap {
         this.description = description;
     }
 
-    public int getSteps() {
+    public Integer getSteps() {
         return steps;
     }
 
-    public void setSteps(int steps) {
+    public void setSteps(Integer steps) {
         this.steps = steps;
     }
 
-    public boolean isCompleted() {
+    public Boolean isCompleted() {
         return completed;
     }
 
-    public void setCompleted(boolean completed) {
+    public void setCompleted(Boolean completed) {
         this.completed = completed;
     }
 
     // methods
     public String toString() {
         return String.format(
-                "RoadMap[id=%s, name='%s', description='%s', steps=%d, completed=%s]",
+                "RoadMap[id=%s, name='%s', description='%s', steps=%s, completed=%s]",
                 id, name, description, steps, completed);
     }
 }

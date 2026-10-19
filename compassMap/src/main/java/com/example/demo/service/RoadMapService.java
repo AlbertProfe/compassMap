@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class RoadMapService {
@@ -28,9 +27,8 @@ public class RoadMapService {
     }
 
     public RoadMap createRoadMap(RoadMap roadMap) {
-        // SET ID roadMap to UUID
-        roadMap.setId(UUID.randomUUID().toString());
-
+        // the id is generated automatically by @GeneratedValue(GenerationType.UUID)
+        // so we do NOT set it here, otherwise Hibernate tries to merge a detached row
         RoadMap createdRoadMap = roadMapRepository.save(roadMap);
         System.out.println("Service created roadMap: " + createdRoadMap);
         return createdRoadMap;
@@ -72,10 +70,12 @@ public class RoadMapService {
         if (incoming.getDescription() != null) {
             existing.setDescription(incoming.getDescription());
         }
-        if (incoming.getSteps() > 0) {
+        if (incoming.getSteps() != null && incoming.getSteps() > 0) {
             existing.setSteps(incoming.getSteps());
         }
-        existing.setCompleted(incoming.isCompleted());
+        if (incoming.isCompleted() != null) {
+            existing.setCompleted(incoming.isCompleted());
+        }
         return roadMapRepository.save(existing);
     }
 }

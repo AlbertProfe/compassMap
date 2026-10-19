@@ -146,7 +146,9 @@ public class BackOffice {
         roadMaps.forEach(roadMapsToPrint::add);
 
         if (pendingOnly) {
-            long pending = roadMapsToPrint.stream().filter(r -> !r.isCompleted()).count();
+            long pending = roadMapsToPrint.stream()
+                    .filter(r -> !Boolean.TRUE.equals(r.isCompleted()))
+                    .count();
             System.out.println("\nPending roadmaps: " + pending);
         }
 
@@ -154,11 +156,11 @@ public class BackOffice {
         System.out.println("-".repeat(72));
 
         roadMapsToPrint.stream()
-                .filter(r -> !pendingOnly || !r.isCompleted())
-                .sorted(Comparator.comparingInt(RoadMap::getSteps).reversed())
+                .filter(r -> !pendingOnly || !Boolean.TRUE.equals(r.isCompleted()))
+                .sorted(Comparator.comparingInt((RoadMap r) -> r.getSteps() == null ? 0 : r.getSteps()).reversed())
                 .forEach(r -> System.out.printf("%-20s %-35s %5d %9s%n",
-                        r.getName(), r.getDescription(), r.getSteps(),
-                        r.isCompleted() ? "OK" : "-"));
+                        r.getName(), r.getDescription(), r.getSteps() == null ? 0 : r.getSteps(),
+                        Boolean.TRUE.equals(r.isCompleted()) ? "OK" : "-"));
     }
 
     public static void customerMenu() {
