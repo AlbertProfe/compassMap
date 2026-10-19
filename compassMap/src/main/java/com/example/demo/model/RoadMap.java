@@ -67,4 +67,11 @@ public class RoadMap {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
+
+    // methods
+    public String toString() {
+        return String.format(
+                "RoadMap[id=%s, name='%s', description='%s', steps=%d, completed=%s]",
+                id, name, description, steps, completed);
+    }
 }
