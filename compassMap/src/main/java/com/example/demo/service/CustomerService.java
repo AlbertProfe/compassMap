@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,6 +16,10 @@ public class CustomerService {
     // we are using here DEPENDENCE INJECTION
     @Autowired
     private CustomerRepository customerRepository;
+
+    public Iterable<Customer> getAllCustomers() {
+        return customerRepository.findAll();
+    }
 
     public Customer createCustomer (Customer customer){
         // SET ID customer to UUID
@@ -27,9 +32,7 @@ public class CustomerService {
     }
 
     public void deleteCustomer (String id){
-
       customerRepository.deleteById(id);
-
 
     }
 
