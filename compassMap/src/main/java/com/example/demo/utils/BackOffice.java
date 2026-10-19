@@ -1,5 +1,6 @@
 package com.example.demo.utils;
 
+import com.example.demo.model.Customer;
 import com.example.demo.service.CustomerService;
 
 import java.util.Scanner;
@@ -45,7 +46,7 @@ public class BackOffice {
         boolean inCustomerMenu = true;
         while (inCustomerMenu) {
             customerMenu();
-            String custOption = scan.nextLine();
+            String custOption = askMenuOption(scan);
             switch (custOption) {
                 case "1":
                     System.out.print("How many customers? ");
@@ -54,20 +55,34 @@ public class BackOffice {
                     System.out.println(count + " customers created and saved.");
                     break;
                 case "2":
+                    Iterable<Customer> all = populatorDB.customerService.getAllCustomers();
+                    int i = 0;
+                    for (Customer c : all) {
+                        System.out.print("#" + ++i + ": ");
+                        System.out.println(c);
+                    }
+                    break;
+                case "3":
+                    System.out.print("Customer ID: ");
+                    String getId = scan.nextLine();
+                    Customer found = populatorDB.customerService.getCustomerById(getId);
+                    System.out.println(found != null ? found : "Not found");
+                    break;
+                case "4":
                     System.out.print("Customer ID to delete: ");
                     String id = scan.nextLine();
                     populatorDB.customerService.deleteCustomer(id);
                     System.out.println("Customer " + id + " deleted.");
                     break;
-                case "3":
+                case "5":
                     populatorDB.customerService.deleteAllCustomers();
                     System.out.println("All customers deleted.");
                     break;
-                case "4":
+                case "6":
                     long total = populatorDB.customerService.countCustomers();
                     System.out.println("Total customers: " + total);
                     break;
-                case "5":
+                case "7":
                     inCustomerMenu = false;
                     break;
                 default:
@@ -90,10 +105,12 @@ public class BackOffice {
     public static void customerMenu() {
         System.out.println("\n===== CUSTOMER MENU =====");
         System.out.println("1. Create customers");
-        System.out.println("2. Delete customer");
-        System.out.println("3. Delete all customers");
-        System.out.println("4. Count customers");
-        System.out.println("5. Quit");
+        System.out.println("2. Get all customers");
+        System.out.println("3. Get customer by Id");
+        System.out.println("4. Delete customer");
+        System.out.println("5. Delete all customers");
+        System.out.println("6. Count customers");
+        System.out.println("7. Quit");
     }
 
     public static void mainMenu() {
