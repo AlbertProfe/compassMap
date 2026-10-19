@@ -6,12 +6,15 @@ import java.util.Scanner;
 
 public class BackOffice {
 
+    //static Scanner scan = new Scanner(System.in);
+
     // it is the entry-point for the backoffice class
     // and it has the main MENU, main options
     // and CRUD operation for our model and fake data
     public static void startBackOffice(PopulatorDB populatorDB) {
         // We will create just one scanner object
         // and it will pass to another methods
+
         Scanner scan = new Scanner(System.in);
 
         while (true) {
@@ -21,7 +24,7 @@ public class BackOffice {
 
             switch (option) {
                 case "1":
-                    customerLoop(scan, populatorDB, populatorDB.customerService);
+                    customerLoop(scan, populatorDB);
                     break;
                 case "2":
                     System.out.println("Roadmap - not implemented yet.");
@@ -38,7 +41,7 @@ public class BackOffice {
         }
     }
 
-    public static void customerLoop(Scanner scan, PopulatorDB populatorDB, CustomerService customerService) {
+    public static void customerLoop(Scanner scan, PopulatorDB populatorDB) {
         boolean inCustomerMenu = true;
         while (inCustomerMenu) {
             customerMenu();
@@ -53,15 +56,15 @@ public class BackOffice {
                 case "2":
                     System.out.print("Customer ID to delete: ");
                     String id = scan.nextLine();
-                    customerService.deleteCustomer(id);
+                    populatorDB.customerService.deleteCustomer(id);
                     System.out.println("Customer " + id + " deleted.");
                     break;
                 case "3":
-                    customerService.deleteAllCustomers();
+                    populatorDB.customerService.deleteAllCustomers();
                     System.out.println("All customers deleted.");
                     break;
                 case "4":
-                    long total = customerService.countCustomers();
+                    long total = populatorDB.customerService.countCustomers();
                     System.out.println("Total customers: " + total);
                     break;
                 case "5":
@@ -77,6 +80,9 @@ public class BackOffice {
         while(true){
             String option = askMenuOption(scan);
             switch (option){
+                // we should implement the option for roadMap entity
+                // populate the roadMap table with synthetic data
+                // and call the roadMap service to delete and count
             }
         }
     }

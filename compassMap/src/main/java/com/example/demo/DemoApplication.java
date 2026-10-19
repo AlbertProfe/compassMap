@@ -18,6 +18,8 @@ public class DemoApplication  implements CommandLineRunner {
 
 	public static void main(String[] args) {
 
+		// SpringApplication.run(DemoApplication.class, args) is the entry point of the application
+		// it will start the application as a Tomcat server
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
