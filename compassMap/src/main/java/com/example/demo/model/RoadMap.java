@@ -32,8 +32,8 @@ public class RoadMap {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public static String setId(String id) {
+        return id;
     }
 
     public String getName() {
