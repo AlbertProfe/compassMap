@@ -237,6 +237,7 @@ $ tree
 ```
 
 
+
 ## Java classes
 
 ### Entities
@@ -282,6 +283,33 @@ public class RoadMap {
 
 
 ```
+### Lombok
+
+> [Project Lombok](https://projectlombok.org/) is a Java library that plugs into the compiler and generates boilerplate code at build time via annotations — getters, setters, constructors, `toString()`, `equals()`/`hashCode()`, builders, and more.
+
+**Why we use it:** entity and model classes need a lot of repetitive code that adds no business value. With Lombok, `Customer` stays readable and focused on its fields; changing a field doesn't require updating getters, constructors, or `toString()` by hand.
+
+**Dependency** (already included in `pom.xml`, managed by the Spring Boot parent):
+
+```xml
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <optional>true</optional>
+</dependency>
+```
+
+**Annotations used in this project:**
+
+| Annotation | Generates |
+|------------|-----------|
+| `@Data` | getters, setters, `toString()`, `equals()`, `hashCode()` |
+| `@Builder` | fluent builder API (e.g., `Customer.builder().firstName("...").build()`) |
+| `@NoArgsConstructor` | no-argument constructor (required by JPA) |
+| `@AllArgsConstructor` | constructor with all fields (used by `@Builder`) |
+
+> Official docs and setup guides for IDEs: <https://projectlombok.org/>
+
 
 
 ### Synthetic data
