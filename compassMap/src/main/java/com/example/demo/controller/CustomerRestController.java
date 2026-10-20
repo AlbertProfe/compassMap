@@ -43,7 +43,7 @@ public class CustomerRestController {
     }
 
     //----------------------------- GET -----------------------------
-    @GetMapping("/getAll")
+    @GetMapping("/all")
     public Iterable<Customer> getAllCustomers() {
         // call service to get all customers and return them
         Iterable<Customer> customers =  customerService.getAllCustomers();
