@@ -283,6 +283,11 @@ public class RoadMap {
 
 
 ```
+
+### Model
+
+- [Model: 2 aproaches](https://github.com/AlbertProfe/compassMap/blob/master/docs/appends/DataModel.md)
+
 ### Lombok
 
 > [Project Lombok](https://projectlombok.org/) is a Java library that plugs into the compiler and generates boilerplate code at build time via annotations — getters, setters, constructors, `toString()`, `equals()`/`hashCode()`, builders, and more.
