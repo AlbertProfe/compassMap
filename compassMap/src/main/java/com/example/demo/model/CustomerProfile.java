@@ -27,9 +27,9 @@ public class CustomerProfile {
     private String description;
     private String goal;
     // answers of the customer per dimension
-    private HashMap<Dimension, Boolean> answers;
+    //private HashMap<Dimension, Boolean> answers;
     // recommended roadmap
-    private RoadMap recommendedRoadmap;
+    //private RoadMap recommendedRoadmap;
 
 
     public String toString() {

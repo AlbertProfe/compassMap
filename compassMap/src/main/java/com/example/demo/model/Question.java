@@ -9,14 +9,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+//@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Question {
 
-    @Id
+    //@Id
     private String id;
     private String text;
     @Enumerated(EnumType.STRING)

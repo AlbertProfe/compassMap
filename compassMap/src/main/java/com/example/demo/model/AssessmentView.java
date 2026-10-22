@@ -13,14 +13,14 @@ import lombok.NoArgsConstructor;
 import java.time.Instant;
 import java.util.List;
 
-@Entity
+//@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class AssessmentView {
 
-    @Id
+    //@Id
     private String id;
 
     private Customer customer;

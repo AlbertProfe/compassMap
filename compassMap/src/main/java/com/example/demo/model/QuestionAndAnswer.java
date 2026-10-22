@@ -10,14 +10,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+//@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestionAndAnswer {
 
-    @Id
+    //@Id
     private String id;
     private Question question;
     private Answer answer;

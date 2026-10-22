@@ -7,14 +7,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+//@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Answer {
 
-    @Id
+    //@Id
     private String id;
     private Boolean value;
 
