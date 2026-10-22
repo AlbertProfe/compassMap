@@ -1,0 +1,94 @@
+classDiagram
+    direction TB
+
+    class AssessmentView {
+        -String id
+        -Customer customer
+        -Instant timestamp
+        -int qtyQuestions
+        -List~QuestionAndAnswer~ questionsAndAnswers
+        -CustomerProfile profile
+        +getCustomer() Customer
+        +getProfile() CustomerProfile
+        +getQuestionsAndAnswers() List~QuestionAndAnswer~
+    }
+
+    class CustomerProfile {
+        -String id
+        -CodeProfile codeProfile
+        -String name
+        -String description
+        -String goal
+        -HashMap~Dimension, Boolean~ answers
+        -RoadMap recommendedRoadmap
+        +toString() String
+    }
+
+    class QuestionAndAnswer {
+        -Question question
+        -Answer answer
+        -Double scoreContribution
+        +getQuestion() Question
+        +getAnswer() Answer
+        +getScoreContribution() Double
+    }
+
+    class Question {
+        -String id
+        -String text
+        -Dimension dimension
+        -int order
+        -double weight
+        +getText() String
+    }
+
+    class Answer {
+        -String id
+        -Boolean value
+        +getValue() Boolean
+    }
+
+    class Customer {
+        -String id
+        -String firstName
+        -String lastName
+        -String email
+        -String phone
+        -String address
+    }
+
+    class RoadMap {
+        -String id
+        -String name
+        -String description
+        -int steps
+        -boolean completed
+        +toString() String
+    }
+
+    class CodeProfile {
+        <<enumeration>>
+        ARCHITECT
+        AI_PRACTITIONER
+        BEGINNER
+        NON_DEVELOPER
+    }
+
+    class Dimension {
+        <<enumeration>>
+        KNOWS_CODE
+        WANTS_TO_LEARN
+    }
+
+    AssessmentView --> Customer : customer
+    AssessmentView --> CustomerProfile : profile
+    AssessmentView "1" *-- "many" QuestionAndAnswer : questionsAndAnswers
+
+    CustomerProfile --> CodeProfile : codeProfile
+    CustomerProfile --> RoadMap : recommendedRoadmap
+    CustomerProfile --> Dimension : answers (key)
+
+    QuestionAndAnswer --> Question : question
+    QuestionAndAnswer --> Answer : answer
+
+    Question --> Dimension : dimension
