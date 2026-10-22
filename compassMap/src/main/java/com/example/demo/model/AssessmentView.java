@@ -31,5 +31,5 @@ public class AssessmentView {
 
     private CustomerProfile profile;
 
-    private RoadMap recommendedRoadmap;
+
 }

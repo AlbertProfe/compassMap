@@ -26,8 +26,10 @@ public class CustomerProfile {
     private String name;
     private String description;
     private String goal;
-    private HashMap<String, String> code;
-
+    // answers of the customer per dimension
+    private HashMap<Dimension, Boolean> answers;
+    // recommended roadmap
+    private RoadMap recommendedRoadmap;
 
 
     public String toString() {
