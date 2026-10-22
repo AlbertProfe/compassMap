@@ -25,7 +25,7 @@ public class RoadMapService {
 
         // call repository to use SAVE operation to save data to h2 db
         RoadMap createdRoadMap = roadMapRepository.save(roadMap);
-        System.out.println("Service created roadMap: " +  createdRoadMap);
+        //System.out.println("Service created roadMap: " +  createdRoadMap);
         return createdRoadMap;
     }
 
@@ -39,6 +39,10 @@ public class RoadMapService {
     }
 
     public Iterable<RoadMap> saveAll(Iterable<RoadMap> roadMaps) {
+        // SET ID roadMap to UUID, for all the objects
+        for (RoadMap roadMap : roadMaps) {
+            roadMap.setId(UUID.randomUUID().toString());
+        }
         return roadMapRepository.saveAll(roadMaps);
     }
 

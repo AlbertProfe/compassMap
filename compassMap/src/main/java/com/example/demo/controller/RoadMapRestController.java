@@ -35,10 +35,11 @@ public class RoadMapRestController {
     @PutMapping("/update")
     public RoadMap updateRoadMap(@RequestBody RoadMap roadMap) {
         if (roadMap.getId() == null || roadMapService.getRoadMapById(roadMap.getId()) == null) {
+            System.out.println("Service updateRoadMap: not found");
             return null;
         }
         RoadMap updatedRoadMap = roadMapService.updateRoadMap(roadMap);
-        System.out.println("Service updateCustomer: " + updatedRoadMap);
+        System.out.println("Service updateRoadMap: " + updatedRoadMap);
         return updatedRoadMap;
     }
 
@@ -54,6 +55,10 @@ public class RoadMapRestController {
     @GetMapping("/byId")
     public RoadMap getRoadMapById(@RequestParam String id) {
         RoadMap roadMap = roadMapService.getRoadMapById(id);
+        if (roadMap == null) {
+            System.out.println("Service getRoadMapById: not found");
+            return null;
+        }
         System.out.println("Service getRoadMapById: " + roadMap);
         return roadMap;
     }
@@ -69,11 +74,13 @@ public class RoadMapRestController {
     @DeleteMapping("/byId")
     public RoadMap deleteById(@RequestParam String id) {
         RoadMap foundRoadMap = roadMapService.getRoadMapById(id);
-        if (foundRoadMap == null) return null;
-        else {
-            roadMapService.deleteRoadMap(id);
-            return foundRoadMap;
+        if (foundRoadMap == null) {
+            System.out.println("Service deleteById: not found");
+            return null;
         }
+        roadMapService.deleteRoadMap(id);
+        System.out.println("Service deleteById: " + foundRoadMap);
+        return foundRoadMap;
     }
 
     @DeleteMapping("/all")
