@@ -1,7 +1,10 @@
 # Project structure
 
-```
+## Wed Sep 23 11:48:48 — Initial flat structure
 
+Initial Spring Boot project layout. All classes live in a single `demo` package: the `DemoApplication` entry point, `HomeController`, the `Customer` and `RoadMap` classes, `CustomerRepository`, and `CustomerService`. Two Thymeleaf templates (`home1.html`, `home2.html`) under `templates`, plus `DemoApplicationTests`.
+
+```
 [Wed Sep 23 11:48:48] albert@albert-VirtualBox:~/MyProjects/SpringProjects/compassMap/compassMap/src (master)
 $ tree
 .
@@ -30,8 +33,13 @@ $ tree
                     └── DemoApplicationTests.java
 
 14 directories, 10 files
+```
 
+## Tue Sep 29 08:21:00 — Package refactor
 
+No new classes — pure restructuring. Classes were moved out of the flat `demo` package into layered packages: `controller` (`HomeController`), `model` (`Customer`, `RoadMap`), `repository` (`CustomerRepository`), and `service` (`CustomerService`).
+
+```
 [Tue Sep 29 08:21:00] albert@albert-VirtualBox:~/MyProjects/SpringProjects/compassMap/compassMap/src (master)
 $ tree
 .
@@ -64,8 +72,13 @@ $ tree
                     └── DemoApplicationTests.java
 
 18 directories, 10 files
+```
 
+## Mon Oct 19 11:52:23 — REST controller and utils package
 
+New `CustomerRestController` added to `controller`. New `utils` package introduced with `BackOffice` and `PopulatorDB` (database seeding helpers).
+
+```
 [Mon Oct 19 11:52:23] albert@albert-VirtualBox:~/MyProjects/SpringProjects/compassMap/compassMap/src (master)
 $ tree
 .
@@ -102,8 +115,13 @@ $ tree
                     └── DemoApplicationTests.java
 
 19 directories, 13 files
+```
 
+## Fri Oct 23 08:17:29 — Assessment domain model
 
+Major expansion of the domain model: new entities `Answer`, `AssessmentView`, `CodeProfile`, `CustomerProfile`, `Dimension`, `Question`, and `QuestionAndAnswer` in `model`. New REST controllers `CustomerProfileRestController` and `RoadMapRestController`, new repositories `CustomerProfileRepository` and `RoadMapRepository`, and new services `CustomerProfileService` and `RoadMapService`.
+
+```
 [Fri Oct 23 08:17:29] albert@albert-VirtualBox:~/MyProjects/SpringProjects/compassMap/compassMap/src (master)
 $ tree
 .
@@ -149,7 +167,13 @@ $ tree
 
 
 19 directories, 26 files
+```
 
+## Fri Oct 23 13:43:53 — Question and answer CRUD layer
+
+Completed the question/answer stack: new controllers `QuestionRestController` and `QuestionAndAnswerRestController`, new repositories `QuestionRepository` and `QuestionAndAnswerRepository`, and new services `QuestionService` and `QuestionAndAnswerService`. The `test` tree again shows `DemoApplicationTests`.
+
+```
 [Fri Oct 23 13:43:53] albert@albert-VirtualBox:~/MyProjects/SpringProjects/compassMap/compassMap/src (master)
 $ tree
 .
