@@ -42,6 +42,12 @@ public class CustomerService {
     }
 
     public Iterable<Customer> saveAll(Iterable<Customer> customers) {
+        // SET ID customer to UUID if not provided
+        for (Customer customer : customers) {
+
+                customer.setId(UUID.randomUUID().toString());
+
+        }
         return customerRepository.saveAll(customers);
     }
 
