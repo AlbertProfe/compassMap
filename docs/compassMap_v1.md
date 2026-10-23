@@ -234,6 +234,53 @@ $ tree
 19 directories, 13 files
 
 
+[Fri Oct 23 08:17:29] albert@albert-VirtualBox:~/MyProjects/SpringProjects/compassMap/compassMap/src (master)
+$ tree
+.
+├── main
+│   ├── java
+│   │   └── com
+│   │       └── example
+│   │           └── demo
+│   │               ├── controller
+│   │               │   ├── CustomerProfileRestController.java
+│   │               │   ├── CustomerRestController.java
+│   │               │   ├── HomeController.java
+│   │               │   └── RoadMapRestController.java
+│   │               ├── DemoApplication.java
+│   │               ├── model
+│   │               │   ├── Answer.java
+│   │               │   ├── AssessmentView.java
+│   │               │   ├── CodeProfile.java
+│   │               │   ├── Customer.java
+│   │               │   ├── CustomerProfile.java
+│   │               │   ├── Dimension.java
+│   │               │   ├── QuestionAndAnswer.java
+│   │               │   ├── Question.java
+│   │               │   └── RoadMap.java
+│   │               ├── repository
+│   │               │   ├── CustomerProfileRepository.java
+│   │               │   ├── CustomerRepository.java
+│   │               │   └── RoadMapRepository.java
+│   │               ├── service
+│   │               │   ├── CustomerProfileService.java
+│   │               │   ├── CustomerService.java
+│   │               │   └── RoadMapService.java
+│   │               └── utils
+│   │                   ├── BackOffice.java
+│   │                   └── PopulatorDB.java
+│   └── resources
+│       ├── application.properties
+│       ├── static
+│       └── templates
+│           ├── home1.html
+│           └── home2.html
+└── test
+
+
+19 directories, 26 files
+
+
 ```
 
 
@@ -281,13 +328,15 @@ public class RoadMap {
     //...
 }
 
+//... you can check all the classes at model, next section
 
 ```
 
 ### Model
 
+- [dataModel: diagrams folder](https://github.com/AlbertProfe/compassMap/tree/5eeec6255b0f315da12be053a218d91a83937294/docs/diagrams/data_model)
 - [dataModel: 2 approaches](https://github.com/AlbertProfe/compassMap/blob/master/docs/appends/dataModel-approaches.md)
-- [dataModel v1](https://github.com/AlbertProfe/compassMap/blob/master/docs/appends/dataModel-v1.md)
+- [dataModel: v1](https://github.com/AlbertProfe/compassMap/blob/master/docs/appends/dataModel-v1.md)
 
 ![](https://raw.githubusercontent.com/AlbertProfe/compassMap/5eeec6255b0f315da12be053a218d91a83937294/docs/diagrams/data_model/uml-v1.png)
 
