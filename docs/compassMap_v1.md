@@ -277,7 +277,7 @@ public class RoadMap {
     private String description;
     private int steps;
     private boolean completed;
-    
+
     //...
 }
 
@@ -286,7 +286,10 @@ public class RoadMap {
 
 ### Model
 
-- [Model: 2 aproaches](https://github.com/AlbertProfe/compassMap/blob/master/docs/appends/DataModel.md)
+- [dataModel: 2 approaches](https://github.com/AlbertProfe/compassMap/blob/master/docs/appends/dataModel-approaches.md)
+- [dataModel v1](https://github.com/AlbertProfe/compassMap/blob/master/docs/appends/dataModel-v1.md)
+
+![](https://raw.githubusercontent.com/AlbertProfe/compassMap/5eeec6255b0f315da12be053a218d91a83937294/docs/diagrams/data_model/uml-v1.png)
 
 ### Lombok
 
@@ -517,7 +520,7 @@ public interface CustomerRepository extends CrudRepository<Customer, String> {}
 
 > `REST` (Representational State Transfer) is an architectural style that uses standard HTTP methods and URIs to perform operations on resources. Responses are typically JSON.
 >
-> Rest is the method for applications to communicate to each other. 
+> Rest is the method for applications to communicate to each other.
 
 The `CustomerRestController` provides a RESTful API for the `Customer` entity:
 
