@@ -337,6 +337,8 @@ public class RoadMap {
 - [dataModel: diagrams folder](https://github.com/AlbertProfe/compassMap/tree/5eeec6255b0f315da12be053a218d91a83937294/docs/diagrams/data_model)
 - [dataModel: 2 approaches](https://github.com/AlbertProfe/compassMap/blob/master/docs/appends/dataModel-approaches.md)
 - [dataModel: v1](https://github.com/AlbertProfe/compassMap/blob/master/docs/appends/dataModel-v1.md)
+- [dataModel: mermaid-text](https://github.com/AlbertProfe/compassMap/blob/62cdc0ce295833820aa7dae29cf89dd9b159314f/docs/diagrams/data_model/uml-mermaid-v1.txt)
+- [dataModel: JSON-txt](https://github.com/AlbertProfe/compassMap/blob/62cdc0ce295833820aa7dae29cf89dd9b159314f/docs/diagrams/data_model/objects-exemple-v1.md)
 
 ![](https://raw.githubusercontent.com/AlbertProfe/compassMap/5eeec6255b0f315da12be053a218d91a83937294/docs/diagrams/data_model/uml-v1.png)
 
