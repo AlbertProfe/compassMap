@@ -30,7 +30,7 @@ public class DemoApplication  implements CommandLineRunner {
 		// JAVA SE strategy with STATIC methods
 		// SO we call the class and then
 		// the method
-		BackOffice.startBackOffice(populatorDB);
+		//BackOffice.startBackOffice(populatorDB);
 
 		// JAVA EE, Spring Boot tools
 		// with @Autowired and DI

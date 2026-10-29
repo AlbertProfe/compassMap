@@ -1,6 +1,8 @@
 package com.example.demo;
 
+import com.example.demo.model.Answer;
 import com.example.demo.model.Customer;
+import com.example.demo.model.Question;
 import com.example.demo.model.QuestionAndAnswer;
 import com.example.demo.repository.QuestionAndAnswerRepository;
 import com.example.demo.repository.QuestionRepository;
@@ -74,17 +76,41 @@ class DemoApplicationTests {
 	@Test
 	void questionAndAnswerTentative(){
 
+		/*
+ 		{
+			"id": "7504a93c-a16c-4438-a140-4ae7dd326631",
+			"name": "q-001",
+			"text": "Have you written code in any language before?",
+			"dimension": "KNOWS_CODE",
+			"order": 1,
+			"weight": 1.0
+    	},
+		 */
+
 		// the test must fetch a question
+		Question question = repositoryQuestion.findById("7504a93c-a16c-4438-a140-4ae7dd326631").orElse(null);
+		System.out.println("Question fetched: " + question);
 		// and then create an empty questionAndAnswer
+		QuestionAndAnswer qa1 = new QuestionAndAnswer();
 		// set it with id q-001
+		qa1.setId("qa-001");
 		// set it with question
+		qa1.setQuestion(question);
 		// set it with answer a-001
+		Answer answer = new Answer();
+		answer.setId("a-001");
+		answer.setValue(true);
+		qa1.setAnswer(answer);
+		// set contribution
+		qa1.setScoreContribution(1.0);
  		// and then save it
+		repositoryQuestionAndAnswer.save(qa1);
 		// and then fetch it
+		QuestionAndAnswer questionAndAnswerFound = repositoryQuestionAndAnswer.findById("qa-001").orElse(null);
+		System.out.println("QuestionAndAnswer found: " + questionAndAnswerFound);
 		// optionally, delete it
-
-
-
+		//repositoryQuestionAndAnswer.deleteById("q-001");
+		//System.out.println("QuestionAndAnswer exists after delete: " + repositoryQuestionAndAnswer.existsById("q-001"));
 	}
 
 
