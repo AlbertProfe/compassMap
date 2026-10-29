@@ -1,6 +1,9 @@
 package com.example.demo;
 
 import com.example.demo.model.Customer;
+import com.example.demo.model.QuestionAndAnswer;
+import com.example.demo.repository.QuestionAndAnswerRepository;
+import com.example.demo.repository.QuestionRepository;
 import com.example.demo.service.CustomerService;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
@@ -14,6 +17,10 @@ class DemoApplicationTests {
 	//private CustomerRepository customerRepository;
 	@Autowired
 	private CustomerService customerService;
+	@Autowired
+	private QuestionAndAnswerRepository repositoryQuestionAndAnswer;
+	@Autowired
+	private QuestionRepository repositoryQuestion;
 
 	@Test
 	void contextLoads() {
@@ -62,6 +69,22 @@ class DemoApplicationTests {
 
 			customerService.createCustomer(newCustomer);
 		}
+	}
+
+	@Test
+	void questionAndAnswerTentative(){
+
+		// the test must fetch a question
+		// and then create an empty questionAndAnswer
+		// set it with id q-001
+		// set it with question
+		// set it with answer a-001
+ 		// and then save it
+		// and then fetch it
+		// optionally, delete it
+
+
+
 	}
 
 
