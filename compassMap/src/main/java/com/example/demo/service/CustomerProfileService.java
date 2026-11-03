@@ -40,6 +40,14 @@ public class CustomerProfileService {
         return foundCustomerProfile.orElse(null);
     }
 
+    public CustomerProfile getCustomerProfileByCustomerId(String customerId) {
+        return customerProfileRepository.findByCustomerId(customerId).orElse(null);
+    }
+
+    public CustomerProfile saveCustomerProfile(CustomerProfile customerProfile) {
+        return customerProfileRepository.save(customerProfile);
+    }
+
     public Iterable<CustomerProfile> saveAll(Iterable<CustomerProfile> customerProfiles) {
         for (CustomerProfile customerProfile : customerProfiles) {
             // SET ID customerProfile to UUID (id is not sent from client)
@@ -77,8 +85,8 @@ public class CustomerProfileService {
         if (incoming.getGoal() != null) {
             existing.setGoal(incoming.getGoal());
         }
-        if (incoming.getAnswers() != null) {
-            existing.setAnswers(incoming.getAnswers());
+        if (incoming.getProfileAnswers() != null) {
+            existing.setProfileAnswers(incoming.getProfileAnswers());
         }
         // to do: recommendedRoadmap once the relationship is enabled
         return customerProfileRepository.save(existing);

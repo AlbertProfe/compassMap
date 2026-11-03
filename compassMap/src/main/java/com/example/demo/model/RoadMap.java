@@ -1,14 +1,16 @@
 package com.example.demo.model;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -30,9 +32,20 @@ public class RoadMap {
     // Jackson still deserializes the JSON object fine on request.
     // HashMap does not work with H2 because of the size limit of the column
     @ElementCollection
-    private Map<Integer, String> stepsItemsSummary;
+    private Map<String, String> stepsItemsSummary;
     private int steps;
     private boolean completed;
+
+    //@OneToMany(mappedBy = "recommendedRoadmap", fetch = FetchType.LAZY)
+    //@JsonIgnore
+    //@EqualsAndHashCode.Exclude
+    //private List<CustomerProfile> profiles;
+
+    @ManyToMany(fetch = FetchType.EAGER,
+            mappedBy = "recommendedRoadmaps")
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    private List<CustomerProfile> profiles;
 
     // methods
     public String toString() {
@@ -40,4 +53,5 @@ public class RoadMap {
                 "RoadMap[id=%s, name='%s', description='%s', steps='%s', completed='%s']",
                 id, name, description, steps, completed);
     }
+
 }

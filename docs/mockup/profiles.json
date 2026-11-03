@@ -1,0 +1,30 @@
+[
+  {
+    "id": "P01",
+    "codeProfile": "ARCHITECT",
+    "name": "Improve programming skills",
+    "description": "Developers who already know how to code and want to go deeper (architecture, design patterns, testing, frameworks, etc.)",
+    "goal": "Improve programming skills"
+  },
+  {
+    "id": "P02",
+    "codeProfile": "ARCHITECT",
+    "name": "Use AI to create projects",
+    "description": "People who already know programming and only want to boost productivity with AI tools, without going deeper into code",
+    "goal": "Use AI to create projects"
+  },
+  {
+    "id": "P03",
+    "codeProfile": "BEGINNER",
+    "name": "Starting from scratch in programming",
+    "description": "Absolute beginners who want to really learn programming: fundamentals, logic, data structures and a first language",
+    "goal": "Starting from scratch in programming"
+  },
+  {
+    "id": "P04",
+    "codeProfile": "NON_DEVELOPER",
+    "name": "General introductory course",
+    "description": "Product managers, designers, entrepreneurs or students from other areas who just want to understand what developers do",
+    "goal": "General introductory course"
+  }
+]
