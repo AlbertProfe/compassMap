@@ -283,7 +283,8 @@ public class BackOffice {
 
     public static void assessmentViewLoop(Scanner scan, PopulatorDB populatorDB){
         while(true){
-            entityMenu("ASSESSMENT VIEW", "Create one sample assessment (random profile)");
+            entityMenu("ASSESSMENT VIEW", "Create one sample assessment (random customer, profile, answers)");
+            System.out.println("8. Show questions and answers + score of an assessment");
             String option = askMenuOption(scan);
             try {
                 switch (option){
@@ -292,26 +293,31 @@ public class BackOffice {
                         System.out.println("Assessment created: " + created);
                         break;
                     case "2":
-                        printAll(populatorDB.assessmentViewRepository.findAll());
+                        printAll(populatorDB.assessmentViewService.getAllAssessmentViews());
                         break;
                     case "3":
-                        AssessmentView found = populatorDB.assessmentViewRepository.findById(askId(scan)).orElse(null);
+                        AssessmentView found = populatorDB.assessmentViewService.getAssessmentViewById(askId(scan));
                         System.out.println(found != null ? found : "Not found");
                         break;
                     case "4":
                         String id = askId(scan);
-                        populatorDB.assessmentViewRepository.deleteById(id);
+                        populatorDB.assessmentViewService.deleteAssessmentView(id);
                         System.out.println("AssessmentView " + id + " deleted.");
                         break;
                     case "5":
-                        populatorDB.assessmentViewRepository.deleteAll();
+                        populatorDB.assessmentViewService.deleteAllAssessmentViews();
                         System.out.println("All assessments deleted.");
                         break;
                     case "6":
-                        System.out.println("Total assessments: " + populatorDB.assessmentViewRepository.count());
+                        System.out.println("Total assessments: " + populatorDB.assessmentViewService.countAssessmentViews());
                         break;
                     case "7":
                         return;
+                    case "8":
+                        String assessmentId = askId(scan);
+                        printAll(populatorDB.assessmentViewService.getQuestionAndAnswersByAssessmentViewId(assessmentId));
+                        System.out.println("Total score: " + populatorDB.assessmentViewService.getTotalScore(assessmentId));
+                        break;
                     default:
                         System.out.println("Invalid option, try again.");
                 }

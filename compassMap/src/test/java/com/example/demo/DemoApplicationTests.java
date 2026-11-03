@@ -5,6 +5,7 @@ import com.example.demo.repository.CustomerProfileRepository;
 import com.example.demo.repository.QuestionAndAnswerRepository;
 import com.example.demo.repository.QuestionRepository;
 import com.example.demo.repository.RoadMapRepository;
+import com.example.demo.service.AssessmentViewService;
 import com.example.demo.service.CustomerService;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,10 @@ import tools.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class DemoApplicationTests {
@@ -34,6 +37,8 @@ class DemoApplicationTests {
 	private RoadMapRepository roadMapRepository;
 	@Autowired
 	private CustomerProfileRepository customerProfileRepository;
+	@Autowired
+	private AssessmentViewService assessmentViewService;
 
 	@Test
 	void contextLoads() {
@@ -56,7 +61,6 @@ class DemoApplicationTests {
 
 		customerService.deleteCustomer("8b4ca0f7-5de0-4ab2-a431-a849f158cd62");
 	}
-
 
 	@Test
 	void javaFakerCreateObjects(){
@@ -124,7 +128,6 @@ class DemoApplicationTests {
 		//System.out.println("QuestionAndAnswer exists after delete: " + questionAndAnswerRepository.existsById("q-001"));
 	}
 
-
 	@Test
 	void roadMapAndCustomerProfile(){
 
@@ -178,6 +181,49 @@ class DemoApplicationTests {
 			assertEquals(5, found.getRecommendedRoadmaps().size());
 		}
 
+	}
+
+	@Test
+	void assessmentViewWithQuestionAndAnswers() {
+
+		// customer, question and profile must exist before the assessment
+		Customer customer = customerService.createCustomer(
+				Customer.builder().firstName("Test").lastName("Assessment").build());
+		Question question = questionRepository.save(Question.builder()
+				.id(UUID.randomUUID().toString()).name("q-test")
+				.text("Have you written code before?").dimension(Dimension.KNOWS_CODE)
+				.order(1).weight(1.0).build());
+		CustomerProfile profile = customerProfileRepository.save(CustomerProfile.builder()
+				.id("P-TEST-" + UUID.randomUUID()).codeProfile(CodeProfile.BEGINNER)
+				.name("Test profile").customer(customer).build());
+
+		// one assessment with 2 Q&A rows (saved by cascade)
+		AssessmentView assessmentView = AssessmentView.builder()
+				.customer(customer)
+				.profile(profile)
+				.build();
+		assessmentView.addQuestionAndAnswer(QuestionAndAnswer.builder()
+				.question(question).answer(Answer.builder().value(true).build()).scoreContribution(1.0).build());
+		assessmentView.addQuestionAndAnswer(QuestionAndAnswer.builder()
+				.question(question).answer(Answer.builder().value(false).build()).scoreContribution(0.0).build());
+
+		AssessmentView created = assessmentViewService.createAssessmentView(assessmentView);
+		System.out.println("AssessmentView created: " + created);
+
+		assertEquals(2, created.getQtyQuestions());
+		assertEquals(2, assessmentViewService.getQuestionAndAnswersByAssessmentViewId(created.getId()).size());
+		assertEquals(1.0, assessmentViewService.getTotalScore(created.getId()));
+		assertEquals(1, assessmentViewService.getAssessmentViewsByCustomerId(customer.getId()).size());
+		assertEquals(profile.getId(), assessmentViewService.getAssessmentViewById(created.getId()).getProfile().getId());
+
+		// deleting the assessment cascades to its Q&A rows
+		assessmentViewService.deleteAssessmentView(created.getId());
+		assertTrue(assessmentViewService.getQuestionAndAnswersByAssessmentViewId(created.getId()).isEmpty());
+
+		// clean up
+		customerProfileRepository.deleteById(profile.getId());
+		questionRepository.deleteById(question.getId());
+		customerService.deleteCustomer(customer.getId());
 	}
 
 }

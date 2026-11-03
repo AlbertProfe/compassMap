@@ -9,8 +9,8 @@ import com.example.demo.model.Dimension;
 import com.example.demo.model.Question;
 import com.example.demo.model.QuestionAndAnswer;
 import com.example.demo.model.RoadMap;
-import com.example.demo.repository.AssessmentViewRepository;
 import com.example.demo.repository.RoadMapRepository;
+import com.example.demo.service.AssessmentViewService;
 import com.example.demo.service.CustomerProfileService;
 import com.example.demo.service.CustomerService;
 import com.example.demo.service.QuestionAndAnswerService;
@@ -48,7 +48,7 @@ public class PopulatorDB {
     QuestionAndAnswerService questionAndAnswerService;
 
     @Autowired
-    AssessmentViewRepository assessmentViewRepository;
+    AssessmentViewService assessmentViewService;
 
     // repository used directly to keep readable ids (RM01..RM20) from roadmaps.json
     @Autowired
@@ -148,20 +148,33 @@ public class PopulatorDB {
         return questionAndAnswers;
     }
 
-    // ASSESSMENT VIEW: one sample run linked to a random existing profile
+    // ASSESSMENT VIEW: one sample run for a random customer,
+    // one random answer per existing question, linked to a random existing profile
     public AssessmentView createAndSaveAssessmentView() {
+        Random random = new Random();
+
+        List<Customer> customers = new ArrayList<>();
+        customerService.getAllCustomers().forEach(customers::add);
+        Customer customer = customers.isEmpty() ? null : customers.get(random.nextInt(customers.size()));
+
         List<CustomerProfile> profiles = new ArrayList<>();
         customerProfileService.getAllCustomerProfiles().forEach(profiles::add);
-        CustomerProfile profile = profiles.isEmpty()
-                ? null
-                : profiles.get(new Random().nextInt(profiles.size()));
+        CustomerProfile profile = profiles.isEmpty() ? null : profiles.get(random.nextInt(profiles.size()));
+
         AssessmentView assessmentView = AssessmentView.builder()
-                .id(UUID.randomUUID().toString())
                 .timestamp(Instant.now())
-                .qtyQuestions((int) questionAndAnswerService.countQuestionAndAnswers())
+                .customer(customer)
                 .profile(profile)
                 .build();
-        return assessmentViewRepository.save(assessmentView);
+        for (Question question : questionService.getAllQuestions()) {
+            boolean value = random.nextBoolean();
+            assessmentView.addQuestionAndAnswer(QuestionAndAnswer.builder()
+                    .question(question)
+                    .answer(Answer.builder().value(value).build())
+                    .scoreContribution(value ? question.getWeight() : 0.0)
+                    .build());
+        }
+        return assessmentViewService.createAssessmentView(assessmentView);
     }
 
     // mockup files live in <repo>/docs/mockup; works from repo root or from the module folder
