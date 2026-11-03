@@ -1,0 +1,162 @@
+[
+  {
+    "id": "RM01",
+    "name": "Backend Advanced (P01)",
+    "description": "Deepen backend skills: architecture, patterns and testing.",
+    "stepsItemsSummary": { "1": "Design patterns", "2": "Clean architecture", "3": "REST APIs", "4": "Testing", "5": "Microservices" },
+    "steps": 5,
+    "completed": false
+  },
+  {
+    "id": "RM02",
+    "name": "Frontend Advanced (P01)",
+    "description": "Master modern frontend frameworks and best practices.",
+    "stepsItemsSummary": { "1": "Advanced JavaScript", "2": "TypeScript", "3": "React", "4": "State management", "5": "Frontend testing" },
+    "steps": 5,
+    "completed": false
+  },
+  {
+    "id": "RM03",
+    "name": "Fullstack Advanced (P01)",
+    "description": "Build complete applications end to end.",
+    "stepsItemsSummary": { "1": "Spring Boot", "2": "React", "3": "Databases", "4": "Authentication", "5": "Deployment" },
+    "steps": 5,
+    "completed": false
+  },
+  {
+    "id": "RM04",
+    "name": "DevOps (P01)",
+    "description": "Automate build, test and deployment pipelines.",
+    "stepsItemsSummary": { "1": "Linux", "2": "Docker", "3": "CI/CD", "4": "Kubernetes" },
+    "steps": 4,
+    "completed": false
+  },
+  {
+    "id": "RM05",
+    "name": "Mobile Advanced (P01)",
+    "description": "Go deeper into mobile app development.",
+    "stepsItemsSummary": { "1": "Kotlin", "2": "Android architecture", "3": "Flutter", "4": "Mobile testing" },
+    "steps": 4,
+    "completed": false
+  },
+  {
+    "id": "RM06",
+    "name": "AI for Backend (P02)",
+    "description": "Use AI tools to speed up backend development.",
+    "stepsItemsSummary": { "1": "AI coding assistants", "2": "Prompting for APIs", "3": "AI code review" },
+    "steps": 3,
+    "completed": false
+  },
+  {
+    "id": "RM07",
+    "name": "AI for Frontend (P02)",
+    "description": "Generate and iterate UIs with AI tools.",
+    "stepsItemsSummary": { "1": "AI UI generators", "2": "Prompting for components", "3": "AI refactoring" },
+    "steps": 3,
+    "completed": false
+  },
+  {
+    "id": "RM08",
+    "name": "AI Fullstack Projects (P02)",
+    "description": "Ship full projects quickly with AI agents.",
+    "stepsItemsSummary": { "1": "Project scaffolding with AI", "2": "AI agents", "3": "AI debugging", "4": "Deploy" },
+    "steps": 4,
+    "completed": false
+  },
+  {
+    "id": "RM09",
+    "name": "AI for DevOps (P02)",
+    "description": "Automate infrastructure tasks with AI.",
+    "stepsItemsSummary": { "1": "AI shell assistants", "2": "AI for CI/CD", "3": "AI monitoring" },
+    "steps": 3,
+    "completed": false
+  },
+  {
+    "id": "RM10",
+    "name": "AI APIs Integration (P02)",
+    "description": "Integrate LLM APIs into existing projects.",
+    "stepsItemsSummary": { "1": "LLM APIs", "2": "RAG basics", "3": "AI integration" },
+    "steps": 3,
+    "completed": false
+  },
+  {
+    "id": "RM11",
+    "name": "Backend from Scratch (P03)",
+    "description": "Learn backend programming from zero.",
+    "stepsItemsSummary": { "1": "Logic", "2": "Java basics", "3": "OOP", "4": "SQL", "5": "First API" },
+    "steps": 5,
+    "completed": false
+  },
+  {
+    "id": "RM12",
+    "name": "Frontend from Scratch (P03)",
+    "description": "Learn to build web pages from zero.",
+    "stepsItemsSummary": { "1": "HTML", "2": "CSS", "3": "JavaScript basics", "4": "DOM", "5": "First website" },
+    "steps": 5,
+    "completed": false
+  },
+  {
+    "id": "RM13",
+    "name": "Fullstack from Scratch (P03)",
+    "description": "First steps across frontend and backend.",
+    "stepsItemsSummary": { "1": "Logic", "2": "HTML/CSS", "3": "JavaScript", "4": "Backend basics", "5": "First app" },
+    "steps": 5,
+    "completed": false
+  },
+  {
+    "id": "RM14",
+    "name": "Python from Scratch (P03)",
+    "description": "Learn programming fundamentals with Python.",
+    "stepsItemsSummary": { "1": "Variables", "2": "Control flow", "3": "Functions", "4": "Data structures" },
+    "steps": 4,
+    "completed": false
+  },
+  {
+    "id": "RM15",
+    "name": "Data Structures Basics (P03)",
+    "description": "Core data structures and algorithms for beginners.",
+    "stepsItemsSummary": { "1": "Arrays", "2": "Lists", "3": "Maps", "4": "Sorting" },
+    "steps": 4,
+    "completed": false
+  },
+  {
+    "id": "RM16",
+    "name": "Intro to Backend (P04)",
+    "description": "Understand what backend developers do.",
+    "stepsItemsSummary": { "1": "What is a server", "2": "What is an API", "3": "What is a database" },
+    "steps": 3,
+    "completed": false
+  },
+  {
+    "id": "RM17",
+    "name": "Intro to Frontend (P04)",
+    "description": "Understand how web interfaces are built.",
+    "stepsItemsSummary": { "1": "How the web works", "2": "HTML/CSS overview", "3": "UX basics" },
+    "steps": 3,
+    "completed": false
+  },
+  {
+    "id": "RM18",
+    "name": "Intro to Software Teams (P04)",
+    "description": "Learn how developer teams work.",
+    "stepsItemsSummary": { "1": "Roles", "2": "Agile", "3": "Git overview" },
+    "steps": 3,
+    "completed": false
+  },
+  {
+    "id": "RM19",
+    "name": "Intro to DevOps & Cloud (P04)",
+    "description": "Overview of cloud and deployment concepts.",
+    "stepsItemsSummary": { "1": "What is the cloud", "2": "Deployment overview", "3": "Costs" },
+    "steps": 3,
+    "completed": false
+  },
+  {
+    "id": "RM20",
+    "name": "Intro to AI (P04)",
+    "description": "Understand AI concepts and their impact.",
+    "stepsItemsSummary": { "1": "What is AI", "2": "LLMs overview", "3": "AI use cases" },
+    "steps": 3,
+    "completed": false
+  }
+]
