@@ -1,11 +1,23 @@
 package com.example.demo;
 
-import com.example.demo.model.Customer;
+import com.example.demo.model.*;
+import com.example.demo.repository.CustomerProfileRepository;
+import com.example.demo.repository.QuestionAndAnswerRepository;
+import com.example.demo.repository.QuestionRepository;
+import com.example.demo.repository.RoadMapRepository;
 import com.example.demo.service.CustomerService;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class DemoApplicationTests {
@@ -14,6 +26,14 @@ class DemoApplicationTests {
 	//private CustomerRepository customerRepository;
 	@Autowired
 	private CustomerService customerService;
+	@Autowired
+	private QuestionAndAnswerRepository questionAndAnswerRepository;
+	@Autowired
+	private QuestionRepository questionRepository;
+	@Autowired
+	private RoadMapRepository roadMapRepository;
+	@Autowired
+	private CustomerProfileRepository customerProfileRepository;
 
 	@Test
 	void contextLoads() {
@@ -79,7 +99,7 @@ class DemoApplicationTests {
 		 */
 
 		// the test must fetch a question
-		Question question = repositoryQuestion.findById("7504a93c-a16c-4438-a140-4ae7dd326631").orElse(null);
+		Question question = questionRepository.findById("7504a93c-a16c-4438-a140-4ae7dd326631").orElse(null);
 		System.out.println("Question fetched: " + question);
 		// and then create an empty questionAndAnswer
 		QuestionAndAnswer qa1 = new QuestionAndAnswer();
@@ -95,16 +115,18 @@ class DemoApplicationTests {
 		// set contribution
 		qa1.setScoreContribution(1.0);
  		// and then save it
-		repositoryQuestionAndAnswer.save(qa1);
+		questionAndAnswerRepository.save(qa1);
 		// and then fetch it
-		QuestionAndAnswer questionAndAnswerFound = repositoryQuestionAndAnswer.findById("qa-001").orElse(null);
+		QuestionAndAnswer questionAndAnswerFound = questionAndAnswerRepository.findById("qa-001").orElse(null);
 		System.out.println("QuestionAndAnswer found: " + questionAndAnswerFound);
 		// optionally, delete it
-		//repositoryQuestionAndAnswer.deleteById("q-001");
-		//System.out.println("QuestionAndAnswer exists after delete: " + repositoryQuestionAndAnswer.existsById("q-001"));
+		//questionAndAnswerRepository.deleteById("q-001");
+		//System.out.println("QuestionAndAnswer exists after delete: " + questionAndAnswerRepository.existsById("q-001"));
 	}
 
 
+	@Test
+	void roadMapAndCustomerProfile(){
 
 		// we will create 20 roadmaps from the JSON file
 		// JSON file is in docs/mockup/roadmaps.json
