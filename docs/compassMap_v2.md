@@ -14,12 +14,12 @@
 
 **Spring Boot Goal #2**
 
-Evolve the `v1` pure-backend foundation (flat entities + `H2`) into a **relational data model** using `JPA` relationship annotations (`@OneToMany`, `@ManyToOne`, `@OneToOne`).
+Evolve the `v1` pure-backend foundation (flat entities + `H2`) into a **relational data model** using `JPA` relationship annotations (`@OneToMany`, `@ManyToOne`, `@OneToOne`, `@ManyToMany`).
 
 Three JPA tasks:
 
 - **Task 1** — `QuestionAndAnswer`: turn the plain class into an `@Entity` linked to `Question` and `Answer` via `@ManyToOne`
-- **Task 2** — `CustomerProfile`: link the profile to `Customer` (`@OneToOne`) and to the recommended `RoadMap` (`@ManyToOne`)
+- **Task 2** — `CustomerProfile`: link the profiles to `Customer` (`@ManyToOne`, a customer has many profiles) and to the recommended `RoadMap`s (`@ManyToMany`)
 - **Task 3** — `AssessmentView`: turn the plain class into an `@Entity` aggregating `Customer`, `List<QuestionAndAnswer>` (`@OneToMany`) and `CustomerProfile`
 
 > Scope: entities, repositories, services and REST controllers only. No `Thymeleaf`/views, no frontend in this version.
@@ -40,12 +40,12 @@ Three JPA tasks:
 
 | Entity | Role | Relationships (v2) |
 |--------|------|--------------------|
-| `Customer` | person taking the assessment | `1..n` `AssessmentView`, `1..1` `CustomerProfile` |
+| `Customer` | person taking the assessment | `1..n` `AssessmentView`, `1..n` `CustomerProfile` |
 | `Question` | question catalogue (per `Dimension`) | `1..n` `QuestionAndAnswer` |
 | `Answer` | a boolean answer value | `1..n` `QuestionAndAnswer` |
 | `QuestionAndAnswer` | question + answer + `scoreContribution` | `n..1` `Question`, `n..1` `Answer`, `n..1` `AssessmentView` |
-| `CustomerProfile` | resulting profile (`CodeProfile`) + answers map | `1..1` `Customer`, `n..1` `RoadMap` (recommended) |
-| `RoadMap` | learning path (`stepsItemsSummary`) | `1..n` `CustomerProfile` (inverse) |
+| `CustomerProfile` | resulting profile (`CodeProfile`) + answers map | `n..1` `Customer`, `n..n` `RoadMap` (recommended, owning side) |
+| `RoadMap` | learning path (`stepsItemsSummary`) | `n..n` `CustomerProfile` (inverse) |
 | `AssessmentView` | one assessment run: customer, timestamp, Q&A list, resulting profile | `n..1` `Customer`, `1..n` `QuestionAndAnswer`, `n..1` `CustomerProfile` |
 
 ### Model diagram
@@ -63,8 +63,8 @@ classDiagram
     QuestionAndAnswer "*" --> "1" Question
     QuestionAndAnswer "*" --> "1" Answer
     AssessmentView "*" --> "1" CustomerProfile
-    Customer "1" --> "1" CustomerProfile
-    CustomerProfile "*" --> "1" RoadMap : recommendedRoadmap
+    Customer "1" --> "*" CustomerProfile
+    CustomerProfile "*" <--> "*" RoadMap : recommendedRoadmaps
 ```
 
 ## JPA
@@ -78,7 +78,7 @@ classDiagram
 - **One Customer** takes an assessment
 - **One AssessmentView** records the run: timestamp, number of questions, the `List<QuestionAndAnswer>` and the resulting `CustomerProfile`
 - **Many QuestionAndAnswer** rows per assessment; each one references **one Question** and **one Answer**
-- **One CustomerProfile** per customer, recommending **one RoadMap**
+- **Many CustomerProfiles** per customer (e.g. one per assessment run, the profile can evolve over time), each recommending **many RoadMaps**; the same **RoadMap** can be recommended to **many CustomerProfiles**
 
 ### How JPA relationships work (recap)
 
@@ -87,6 +87,7 @@ classDiagram
 - **`cascade = CascadeType.ALL`**: saving/deleting the parent propagates to children
 - **`fetch = FetchType.LAZY`**: collections load on demand (avoids pulling whole object graphs)
 - **`@OneToOne`**: FK on the owning side; use `mappedBy` on the inverse side
+- **`@ManyToMany` + `@JoinTable`**: no FK column in either entity table — JPA creates a **join table** with two FKs; `@JoinTable` goes on the owning side, `mappedBy` on the inverse side
 
 ### JPA Task 1 — `QuestionAndAnswer`
 
@@ -160,36 +161,75 @@ public class CustomerProfile {
 
     // answers of the customer per dimension — kept from v1
     @ElementCollection
-    private Map<Dimension, Boolean> answers;
+    private Map<Dimension, Boolean> profileAnswers;
 
-    @OneToOne
+    // a customer can have many profiles (owning side)
+    @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    // recommended roadmap
-    @ManyToOne
-    @JoinColumn(name = "roadmap_id")
-    private RoadMap recommendedRoadmap;
+    // recommended roadmaps (owning side)
+    @ManyToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER)
+    @JoinTable(name = "customer_profile_roadmap",
+            joinColumns = @JoinColumn(name = "customer_profile_id"),
+            inverseJoinColumns = @JoinColumn(name = "roadmap_id"))
+    private List<RoadMap> recommendedRoadmaps;
 }
+```
+
+```java
+// RoadMap.java (inverse side)
+@ManyToMany(fetch = FetchType.EAGER,
+        mappedBy = "recommendedRoadmaps")
+@JsonIgnore
+@EqualsAndHashCode.Exclude
+private List<CustomerProfile> profiles;
 ```
 
 **What this means:**
 
-- **`@OneToOne` on `customer`**: one profile belongs to exactly one customer; `customer_id` FK lives in `customer_profile`
-- **`@ManyToOne` on `recommendedRoadmap`**: many profiles can recommend the same `RoadMap` (roadmaps are shared templates); `roadmap_id` FK lives in `customer_profile`
-- **`@ElementCollection` answers**: stays as the per-dimension answers table (`customer_profile_answers`) — basic-type map, not an entity relationship
+- **`@ManyToOne` on `customer`**: one customer can have many profiles (one per assessment, profile evolves over time); each profile belongs to one customer; `customer_id` FK lives in `customer_profile` (not unique, unlike `@OneToOne`)
+- **`@ManyToMany` on `recommendedRoadmaps`**: one profile recommends many roadmaps, and one roadmap (shared template) is recommended to many profiles
+- **`@JoinTable(name = "customer_profile_roadmap")`**: `CustomerProfile` is the *owning* side — it controls the join table; `joinColumns` is the FK to this entity, `inverseJoinColumns` the FK to the other one
+- **`mappedBy = "recommendedRoadmaps"`** on `RoadMap.profiles`: *inverse* side — read-only navigation, no extra table; adding a profile to `roadMap.getProfiles()` alone is **not** persisted
+- **`@JsonIgnore`**: breaks the infinite `profile → roadmaps → profiles → ...` JSON loop
+- **`@EqualsAndHashCode.Exclude`**: breaks the Lombok `@Data` `hashCode()`/`equals()` recursion between both sides
+- **`@ElementCollection` profileAnswers**: stays as the per-dimension answers table (`customer_profile_profile_answers`) — basic-type map, not an entity relationship
 
-**Inverse sides (optional, add if navigation is needed):**
+**Database structure created:**
+
+| `customer_profile` | |
+|---|---|
+| `id` | PK |
+| `customer_id` | FK → `customer.id` |
+
+| `customer_profile_roadmap` (join table) | |
+|---|---|
+| `customer_profile_id` | FK → `customer_profile.id` |
+| `roadmap_id` | FK → `road_map.id` |
+
+> `v2` evolution: the first draft used `@ManyToOne` + `roadmap_id` FK in `customer_profile` (one roadmap per profile). Moving to `@ManyToMany` lets each profile recommend several roadmaps (e.g. `P01` → `RM01..RM05`, see [roadmaps.json](./mockup/roadmaps.json) and [profiles.json](./mockup/profiles.json)). With `ddl-auto=update` the old `roadmap_id` column stays in `customer_profile` unused.
+
+**Check it in `h2-console`:**
+
+```sql
+SELECT * FROM CUSTOMER_PROFILE;
+SELECT * FROM ROAD_MAP;
+SELECT * FROM CUSTOMER_PROFILE_ROADMAP;
+```
+
+**Inverse side (optional, add if navigation is needed):**
 
 ```java
 // Customer.java
-@OneToOne(mappedBy = "customer")
-private CustomerProfile profile;
-
-// RoadMap.java
-@OneToMany(mappedBy = "recommendedRoadmap", fetch = FetchType.LAZY)
+@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+@JsonIgnore
+@EqualsAndHashCode.Exclude
 private List<CustomerProfile> profiles;
 ```
+
+> `v2` evolution: the first draft used `@OneToOne` (one profile per customer, `customer_id` with a **unique** constraint). With `ddl-auto=update` that unique constraint is **not** dropped — recreate the DB (or `ddl-auto=create` once) after switching to `@ManyToOne`.
 
 ### JPA Task 3 — `AssessmentView`
 
@@ -243,6 +283,8 @@ public class AssessmentView {
 - **`@Data` + relationships**: Lombok `toString()`/`equals()` traverse both sides and can loop or trigger lazy loads — exclude relationship fields if needed (`@ToString.Exclude`)
 - **`order` is reserved in H2** — `Question.order` already maps to `question_order`
 - **N+1 risk** on `AssessmentView.questionsAndAnswers` — plan a `JOIN FETCH` query or `@EntityGraph` in the repository
+- **`@ManyToMany` + `CascadeType.ALL`/`REMOVE`** — deleting a profile also deletes roadmaps shared with other profiles; prefer `{PERSIST, MERGE}` in production
+- **`EAGER` on both sides of a `@ManyToMany`** — loads the whole graph (profile → roadmaps → profiles ...); keep the inverse side `LAZY` when data grows
 
 
 ![Cacajec](diagrams/JPA/Cacajec.png)
