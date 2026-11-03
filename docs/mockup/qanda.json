@@ -1,0 +1,35 @@
+[
+  {
+    "id": "NSLKF-ASP6-PP23RF-NNG",
+    "question": {
+      "id": "FDQEF-324F-F234RF-243",
+      "name": "q-001",
+      "text": "Do you want to learn coding",
+      "dimension": "WANTS_TO_LEARN",
+      "order": 1,
+      "weight": 1.0
+    },
+    "answer": {
+      "id": "FDQEF-324F-F234RF-243",
+      "value": true
+    },
+    "scoreContribution": 1.5
+  },
+  {
+    "id": "NSLKF-ASP6-PP23RF-777",
+    "question": {
+      "id": "FDQEF-324F-F234RF-243",
+      "name": "q-001",
+      "text": "Do you want to learn coding",
+      "dimension": "WANTS_TO_LEARN",
+      "order": 1,
+      "weight": 1.0
+    },
+    "answer": {
+      "id": "FDQEF-324F-F234RF-99",
+      "value": false
+    },
+    "scoreContribution": 1.5
+  }
+]
+

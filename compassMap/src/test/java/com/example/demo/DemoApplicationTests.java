@@ -1,11 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.model.Answer;
 import com.example.demo.model.Customer;
-import com.example.demo.model.Question;
-import com.example.demo.model.QuestionAndAnswer;
-import com.example.demo.repository.QuestionAndAnswerRepository;
-import com.example.demo.repository.QuestionRepository;
 import com.example.demo.service.CustomerService;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
@@ -19,10 +14,6 @@ class DemoApplicationTests {
 	//private CustomerRepository customerRepository;
 	@Autowired
 	private CustomerService customerService;
-	@Autowired
-	private QuestionAndAnswerRepository repositoryQuestionAndAnswer;
-	@Autowired
-	private QuestionRepository repositoryQuestion;
 
 	@Test
 	void contextLoads() {
@@ -114,5 +105,57 @@ class DemoApplicationTests {
 	}
 
 
+
+		// we will create 20 roadmaps from the JSON file
+		// JSON file is in docs/mockup/roadmaps.json
+		List<RoadMap> roadMaps = new ObjectMapper().readValue(
+				new File("../docs/mockup/roadmaps.json"),
+				new TypeReference<List<RoadMap>>() {});
+
+		// we will create 5 customer profiles WITH NO ROADMAP
+		// JSON file is in docs/mockup/4-1.md
+		List<CustomerProfile> profiles = List.of(
+				CustomerProfile.builder().id("P01").codeProfile(CodeProfile.ARCHITECT)
+						.name("Improve programming skills").goal("Improve programming skills")
+						.description("Developers who already know how to code and want to go deeper").build(),
+				CustomerProfile.builder().id("P02").codeProfile(CodeProfile.ARCHITECT)
+						.name("Use AI to create projects").goal("Use AI to create projects")
+						.description("People who know programming and want to boost productivity with AI").build(),
+				CustomerProfile.builder().id("P03").codeProfile(CodeProfile.BEGINNER)
+						.name("Starting from scratch in programming").goal("Starting from scratch in programming")
+						.description("Absolute beginners who want to really learn programming").build(),
+				CustomerProfile.builder().id("P04").codeProfile(CodeProfile.NON_DEVELOPER)
+						.name("General introductory course").goal("General introductory course")
+						.description("Non-developers who want to understand what developers do").build()
+		);
+
+		// we will assign a roadmap to each customer profile
+		for (CustomerProfile profile : profiles) {
+			List<RoadMap> assigned = new ArrayList<>();
+			for (RoadMap roadMap : roadMaps) {
+				if (roadMap.getName().contains("(" + profile.getId() + ")")) {
+					assigned.add(roadMap);
+				}
+			}
+			profile.setRecommendedRoadmaps(assigned);
+		}
+
+		//save the roadmaps
+		roadMapRepository.saveAll(roadMaps);
+
+		//save the customer profiles
+		customerProfileRepository.saveAll(profiles);
+
+		// print all roadmaps
+		roadMapRepository.findAll().forEach(System.out::println);
+
+		// print all customer profiles
+		for (CustomerProfile profile : profiles) {
+			CustomerProfile found = customerProfileRepository.findById(profile.getId()).orElseThrow();
+			System.out.println(found + " -> " + found.getRecommendedRoadmaps());
+			assertEquals(5, found.getRecommendedRoadmaps().size());
+		}
+
+	}
 
 }
