@@ -32,13 +32,10 @@ public class CustomerProfile {
     // HashMap does not work with H2 because of the size limit of the column
     @ElementCollection
     private Map<Dimension, Boolean> profileAnswers;
-    @OneToOne
+
+    @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-    // recommended roadmap
-    //@ManyToOne
-    //@JoinColumn(name = "roadmap_id")
-    //private RoadMap recommendedRoadmap;
 
     @ManyToMany(cascade = CascadeType.ALL,
             fetch = FetchType.EAGER)
