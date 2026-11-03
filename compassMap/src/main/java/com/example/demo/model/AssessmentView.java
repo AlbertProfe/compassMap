@@ -2,9 +2,11 @@ package com.example.demo.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,22 +15,26 @@ import lombok.NoArgsConstructor;
 import java.time.Instant;
 import java.util.List;
 
-//@Entity
+@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class AssessmentView {
 
-    //@Id
+    @Id
     private String id;
 
+    @Transient
     private Customer customer;
     private Instant timestamp;
     private int qtyQuestions;
 
+    @Transient
     private List<QuestionAndAnswer> questionsAndAnswers;
 
+    @ManyToOne
+    @JoinColumn(name = "customer_profile_id")
     private CustomerProfile profile;
 
 
