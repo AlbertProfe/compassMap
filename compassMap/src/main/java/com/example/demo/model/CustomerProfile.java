@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -30,9 +31,22 @@ public class CustomerProfile {
     // Jackson still deserializes the JSON object fine on request.
     // HashMap does not work with H2 because of the size limit of the column
     @ElementCollection
-    private Map<Dimension, Boolean> answers;
+    private Map<Dimension, Boolean> profileAnswers;
+    @OneToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
     // recommended roadmap
+    //@ManyToOne
+    //@JoinColumn(name = "roadmap_id")
     //private RoadMap recommendedRoadmap;
+
+    @ManyToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER)
+    @JoinTable(name = "customer_profile_roadmap",
+            joinColumns = @JoinColumn(name = "customer_profile_id"),
+            inverseJoinColumns = @JoinColumn(name = "roadmap_id"))
+    private List<RoadMap> recommendedRoadmaps;
+
 
 
     public String toString() {
