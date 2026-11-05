@@ -1,5 +1,17 @@
 # Data Model v2 — CompassMap (JPA)
 
+## References
+
+- [H2 database screenshots](https://github.com/AlbertProfe/compassMap/tree/task3-assessmentview/docs/screenshots/dataBase)
+- [IDE: the 3 task branches](https://github.com/AlbertProfe/compassMap/blob/task3-assessmentview/docs/screenshots/ide/compassMap-tasks-branchs.png)
+- [Test docs (gist)](https://gist.github.com/AlbertProfe/9f6877aa4f6f111bb3dd870a4c8bcb67) — test for Task 3 (`AssessmentView`)
+- [Branches](https://github.com/AlbertProfe/compassMap/branches) — one per task:
+  - Task 1 (`QuestionAndAnswer`) is implemented in the branch [`task1-qanda`](https://github.com/AlbertProfe/compassMap/tree/task1-qanda) — PR [#8](https://github.com/AlbertProfe/compassMap/pull/8)
+  - Task 2 (`CustomerProfile`) is implemented in the branch [`task2-profile`](https://github.com/AlbertProfe/compassMap/tree/task2-profile) — PR [#7](https://github.com/AlbertProfe/compassMap/pull/7)
+  - Task 3 (`AssessmentView`) is implemented in the branch [`task3-assessmentview`](https://github.com/AlbertProfe/compassMap/tree/task3-assessmentview)
+
+---
+
 ## Summary
 
 This document continues [Data Model v1](./dataModel-v1.md) and describes how the **three JPA tasks** defined in [compassMap v2](../compassMap_v2.md) were implemented in `com.example.demo.model`.
@@ -147,6 +159,8 @@ Implementation notes:
 ---
 
 ## Task 3 — AssessmentView section
+
+> Branch: [`task3-assessmentview`](https://github.com/AlbertProfe/compassMap/tree/task3-assessmentview)
 
 **v1 → v2:** `AssessmentView` goes from a composed in-memory object (`@Entity` commented out) to a mapped **aggregate root**. It owns its Q&A rows (composition) and references the shared `Customer` and `CustomerProfile` (associations).
 
