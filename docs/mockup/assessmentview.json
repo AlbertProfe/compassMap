@@ -1,0 +1,21 @@
+{
+  "customer": { "id": "26256f77-06ea-4c6e-bba3-4754bced74e8" },
+  "profile": { "id": "916933e0-70d5-4c52-9aa9-48840a01cc30" },
+  "questionsAndAnswers": [
+    {
+      "question": { "id": "7504a93c-a16c-4438-a140-4ae7dd326631" },
+      "answer": { "value": true },
+      "scoreContribution": 1.0
+    },
+    {
+      "question": { "id": "e0041c35-8a76-49af-8745-b9d0c128ebec" },
+      "answer": { "value": false },
+      "scoreContribution": 0.0
+    },
+    {
+      "question": { "id": "813ff44d-9e58-455c-908a-b2cac485c0f5" },
+      "answer": { "value": true },
+      "scoreContribution": 1.0
+    }
+  ]
+}
