@@ -186,41 +186,77 @@ class DemoApplicationTests {
 	@Test
 	void assessmentViewWithQuestionAndAnswers() {
 
+		// ------------------------------------ PREPARE ------------------------------------
 		// customer, question and profile must exist before the assessment
 		Customer customer = customerService.createCustomer(
-				Customer.builder().firstName("Test").lastName("Assessment").build());
-		Question question = questionRepository.save(Question.builder()
-				.id(UUID.randomUUID().toString()).name("q-test")
-				.text("Have you written code before?").dimension(Dimension.KNOWS_CODE)
-				.order(1).weight(1.0).build());
+				Customer.builder().
+						firstName("Test").
+						lastName("Assessment").
+						build());
+		// question must exist before the assessment
+		Question question = questionRepository.save(
+				Question.builder()
+					.id(UUID.randomUUID().toString()).
+					name("q-test")
+					.text("Have you written code before?")
+						.dimension(Dimension.KNOWS_CODE)
+					.order(1)
+					.weight(1.0)
+						.build());
+
+		// profile must exist before the assessment
 		CustomerProfile profile = customerProfileRepository.save(CustomerProfile.builder()
-				.id("P-TEST-" + UUID.randomUUID()).codeProfile(CodeProfile.BEGINNER)
-				.name("Test profile").customer(customer).build());
+				.id("P-TEST-" + UUID.randomUUID())
+				.codeProfile(CodeProfile.BEGINNER)
+				.name("Test profile")
+				.customer(customer)
+				.build());
 
 		// one assessment with 2 Q&A rows (saved by cascade)
 		AssessmentView assessmentView = AssessmentView.builder()
 				.customer(customer)
 				.profile(profile)
 				.build();
-		assessmentView.addQuestionAndAnswer(QuestionAndAnswer.builder()
-				.question(question).answer(Answer.builder().value(true).build()).scoreContribution(1.0).build());
-		assessmentView.addQuestionAndAnswer(QuestionAndAnswer.builder()
-				.question(question).answer(Answer.builder().value(false).build()).scoreContribution(0.0).build());
 
+		// add 2 Q&A rows
+		assessmentView.addQuestionAndAnswer(QuestionAndAnswer
+				.builder()
+				.question(question).
+				answer(Answer.builder()
+						.value(true)
+						.build())
+				.scoreContribution(1.0)
+				.build());
+
+		assessmentView.addQuestionAndAnswer(QuestionAndAnswer
+				.builder()
+				.question(question)
+				.answer(Answer.builder()
+						.value(false)
+						.build())
+				.scoreContribution(0.0)
+				.build());
+
+		// Once assessmentView is created
+		// and assigned to a profile, to a customer, to a question and to an answer list
+		//  it is saved by cascade
 		AssessmentView created = assessmentViewService.createAssessmentView(assessmentView);
 		System.out.println("AssessmentView created: " + created);
 
+		// ------------------------------------	ASSERTS ------------------------------------
 		assertEquals(2, created.getQtyQuestions());
 		assertEquals(2, assessmentViewService.getQuestionAndAnswersByAssessmentViewId(created.getId()).size());
 		assertEquals(1.0, assessmentViewService.getTotalScore(created.getId()));
 		assertEquals(1, assessmentViewService.getAssessmentViewsByCustomerId(customer.getId()).size());
 		assertEquals(profile.getId(), assessmentViewService.getAssessmentViewById(created.getId()).getProfile().getId());
 
+
+		// ------------------------------------	CLEAN UP ------------------------------------
 		// deleting the assessment cascades to its Q&A rows
 		assessmentViewService.deleteAssessmentView(created.getId());
 		assertTrue(assessmentViewService.getQuestionAndAnswersByAssessmentViewId(created.getId()).isEmpty());
 
-		// clean up
+		// deleting the profile cascades to its assessment views
 		customerProfileRepository.deleteById(profile.getId());
 		questionRepository.deleteById(question.getId());
 		customerService.deleteCustomer(customer.getId());
