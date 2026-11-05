@@ -1,6 +1,6 @@
 # compassMap
 
-**compassMap** is a Spring Boot backend that runs a self-assessment for a customer (questions & answers per dimension), computes a resulting `CustomerProfile` and recommends learning `RoadMap`s.
+> **compassMap** is a Spring Boot backend that runs a self-assessment for a customer (questions & answers per dimension), computes a resulting `CustomerProfile` and recommends learning `RoadMap`s.
 
 ## Tech stack
 
@@ -45,20 +45,75 @@ See [docs/compassMap_v2.md](docs/compassMap_v2.md) for details and diagrams.
 
 ## Getting started
 
-1. Adjust `spring.datasource.url` in `compassMap/src/main/resources/application.properties` to a local path (or use the in-memory option).
-2. Run:
+### Prerequisites
+
+- **JDK 21** (check with `java -version`)
+- **Git**
+- An IDE: **IntelliJ IDEA** (recommended), VS Code (with *Extension Pack for Java* + *Spring Boot Extension Pack*) or Eclipse/STS
+- **Lombok** support enabled in your IDE (IntelliJ: *Settings > Build > Compiler > Annotation Processors > Enable annotation processing*)
+- Maven is **not** required: the project ships with the Maven wrapper (`mvnw`)
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/AlbertProfe/compassMap.git
+cd compassMap
+```
+
+### 2. Open the project in your IDE
+
+- **IntelliJ IDEA**: *File > Open* and select the inner `compassMap/compassMap/pom.xml` (choose *Open as Project*). Wait for Maven to import dependencies.
+- **VS Code**: *File > Open Folder* and select `compassMap/compassMap`.
+- Set the project SDK to **Java 21** if the IDE asks.
+
+### 3. Configure the database
+
+Edit `compassMap/src/main/resources/application.properties` and point `spring.datasource.url` to a path on your machine, for example:
+
+```properties
+# file-based (data persists between runs)
+spring.datasource.url=jdbc:h2:./db/compassmapdb
+# or in-memory (data lost on shutdown)
+#spring.datasource.url=jdbc:h2:mem:testdb
+```
+
+Credentials are defined in the same file (`spring.datasource.username` / `spring.datasource.password`).
+
+### 4. Build and run
+
+From the IDE: run `DemoApplication` (`com.example.demo.DemoApplication`).
+
+From the terminal:
 
 ```bash
 cd compassMap
-./mvnw spring-boot:run
+./mvnw clean install      # build + run tests
+./mvnw spring-boot:run    # start the app
 ```
 
-3. Open:
-   - App: <http://localhost:8080>
-   - H2 console: <http://localhost:8080/h2-console>
+On Windows use `mvnw.cmd` instead of `./mvnw`.
+
+### 5. Try it
+
+- App: <http://localhost:8080>
+- H2 console: <http://localhost:8080/h2-console> (use the same JDBC URL, user and password as in `application.properties`)
+- REST API, e.g.:
+
+```bash
+curl http://localhost:8080/api/v1/customers
+```
+
+### 6. Run the tests
+
+```bash
+cd compassMap
+./mvnw test
+```
 
 ## Documentation
 
 - [compassMap v1](docs/compassMap_v1.md)
 - [compassMap v2](docs/compassMap_v2.md)
+- [UML data model v2 (PDF)](https://github.com/AlbertProfe/compassMap/blob/master/docs/diagrams/data_model/v2/UML.pdf)
+- [Postman API documentation](https://documenter.getpostman.com/view/7473960/2sBYHSy1U9)
 - [Commits](https://github.com/AlbertProfe/compassMap/commits/master/)
