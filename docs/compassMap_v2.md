@@ -293,6 +293,19 @@ public class AssessmentView {
 
 - [Postman DOCS](https://documenter.getpostman.com/view/7473960/2sBYHSy1U9)
 
+### AssessmentView REST — CompassMap v2
+
+- [AssessmentView REST — CompassMap v2](./appends/assessmentview-rest-v2.md)
+
+`AssessmentViewRestController` exposes one assessment run at `/api/v1/assessments`:
+
+- **`POST /create`** creates the whole aggregate in one call: the `AssessmentView`, its `QuestionAndAnswer` rows and their `Answer`s (**composition**, saved by `CascadeType.ALL`)
+- **`Customer`, `CustomerProfile` and `Question`** are **associations**: they must already exist and are sent **by id only** (`{"id": "..."}`); the service loads the real entities and fails if an id is unknown
+- **`AssessmentViewService.createAssessmentView(...)`** generates the ids, sets `timestamp`, links each Q&A to the assessment with `addQuestionAndAnswer(...)` (owning side → `assessment_view_id`), computes `qtyQuestions` and saves once
+- **`questionsAndAnswers` is `WRITE_ONLY`**: accepted in the request, not returned; read it with `GET /questionsAndAnswers?id=...`, and the score with `GET /score?id=...`
+- **`DELETE /byId`** removes the assessment and, by cascade, its Q&A rows and answers
+- **Jackson 3 (Spring Boot 4)**: `spring.jackson.deserialization.fail-on-null-for-primitives=false` is needed because the request omits primitive fields (`qtyQuestions`, `Question.order`/`weight`)
+
 Tasks to do:
 
 - [ ] `QuestionAndAnswerRepository` — exists; add `findByAssessmentViewId(...)`
