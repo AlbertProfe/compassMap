@@ -167,6 +167,7 @@ The controller only delegates; all logic lives in the service. Step by step:
 
 - [Rebuild the Q&A list](https://github.com/AlbertProfe/compassMap/blob/db6179f76c096e941eb0fdc81babb01708089231/compassMap/src/main/java/com/example/demo/service/AssessmentViewService.java#L60)
 - [Diagrams](https://github.com/AlbertProfe/compassMap/tree/db6179f76c096e941eb0fdc81babb01708089231/docs/diagrams/data_model/v2/assessmentView)
+- [assessment-qa-rebuild-diagram](https://diagrammersamples.s3.eu-central-1.amazonaws.com/assessment-qa-rebuild-diagram.html)
 
 The two images below show the same `List<QuestionAndAnswer>` **before** and **after** step 5 of `createAssessmentView(...)`.
 
