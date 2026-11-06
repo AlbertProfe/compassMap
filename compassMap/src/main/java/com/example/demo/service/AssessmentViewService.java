@@ -57,24 +57,59 @@ public class AssessmentViewService {
                     .orElseThrow(() -> new IllegalArgumentException("CustomerProfile not found: " + assessmentView.getProfile().getId())));
         }
 
-        // rebuild the list with the helper so both sides point to each other
+        // Rebuild the questionsAndAnswers list using the helper so that both sides of the
+        // bidirectional association point to each other.
+        //
+        // Why this is necessary:
+        // - QuestionAndAnswer is the *owning* side of the relationship (it holds the FK
+        //   assessment_view_id).
+        // - The inverse side (AssessmentView.questionsAndAnswers) is mappedBy, so Hibernate
+        //   ignores whatever is in that collection when deciding the FK value.
+        // - Calling assessmentView.addQuestionAndAnswer(...) sets BOTH sides:
+        //     1. adds the Q&A to the collection, and
+        //     2. sets questionAndAnswer.assessmentView = this
+        //   Without the second step the FK would be saved as NULL.
+        //
+        // The incoming list is first copied (defensive copy) and then the entity's collection
+        // is cleared so we can rebuild it cleanly with properly managed entities.
         List<QuestionAndAnswer> incoming = assessmentView.getQuestionsAndAnswers() == null
                 ? new ArrayList<>()
                 : new ArrayList<>(assessmentView.getQuestionsAndAnswers());
+
+        // Start with a fresh empty collection on the aggregate root
         assessmentView.setQuestionsAndAnswers(new ArrayList<>());
+
         for (QuestionAndAnswer questionAndAnswer : incoming) {
+
+            // Every QuestionAndAnswer is a new entity – generate its primary key
             questionAndAnswer.setId(UUID.randomUUID().toString());
+
+            // The client must reference an *existing* Question by id only
+            // (Questions are associations, not owned by the assessment)
             if (questionAndAnswer.getQuestion() == null || questionAndAnswer.getQuestion().getId() == null) {
                 throw new IllegalArgumentException("QuestionAndAnswer requires an existing question id");
             }
+
             String questionId = questionAndAnswer.getQuestion().getId();
+
+            // Replace the stub Question (only id) with the fully-loaded managed entity
+            // so that Hibernate sees a real reference and does not try to insert a new Question
             questionAndAnswer.setQuestion(questionRepository.findById(questionId)
                     .orElseThrow(() -> new IllegalArgumentException("Question not found: " + questionId)));
+
+            // Answer is a composition (owned by QuestionAndAnswer) and is therefore created
+            // together with the Q&A.  Assign an id if the client did not send one.
             if (questionAndAnswer.getAnswer() != null && questionAndAnswer.getAnswer().getId() == null) {
                 questionAndAnswer.getAnswer().setId(UUID.randomUUID().toString());
             }
+
+            // Add via the helper so the bidirectional link is established correctly
+            // (this also sets questionAndAnswer.assessmentView = assessmentView)
             assessmentView.addQuestionAndAnswer(questionAndAnswer);
         }
+
+        // eventually, set qtyQuestions, since it is not set in the constructor,
+        // and we have the list of questionsAndAnswers
         assessmentView.setQtyQuestions(assessmentView.getQuestionsAndAnswers().size());
 
         // call repository to use SAVE operation to save data to h2 db
