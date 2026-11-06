@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AssessmentView – Rebuild Q&amp;A List (Step-by-step)</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --border: #334155;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --owner: #f97316;
+    --inverse: #a78bfa;
+    --cascade: #34d399;
+    --danger: #f87171;
+    --ok: #4ade80;
+    --step: #fbbf24;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    padding: 1.5rem;
+  }
+  h1 { font-size: 1.6rem; margin-bottom: 0.3rem; color: var(--accent); }
+  .subtitle { color: var(--muted); margin-bottom: 1.5rem; font-size: 0.95rem; }
+  section { margin-bottom: 2.5rem; }
+  h2 {
+    font-size: 1.2rem;
+    color: var(--step);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.4rem;
+    margin-bottom: 1rem;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.2rem;
+  }
+  .legend span {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.85rem; color: var(--muted);
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot.owner { background: var(--owner); }
+  .dot.inverse { background: var(--inverse); }
+  .dot.cascade { background: var(--cascade); }
+  .dot.assoc { background: #60a5fa; }
+
+  /* ========== UML ========== */
+  .uml-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  @media (max-width: 700px) {
+    .uml-grid { grid-template-columns: 1fr; }
+  }
+  .uml {
+    background: #0f172a;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-family: ui-monospace, 'Cascadia Code', monospace;
+    font-size: 0.82rem;
+    overflow: hidden;
+  }
+  .uml.owner-side { border-color: var(--owner); }
+  .uml.inverse-side { border-color: var(--inverse); }
+  .uml-header {
+    background: #1e293b;
+    padding: 0.5rem 0.75rem;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .uml-body { padding: 0.6rem 0.75rem; }
+  .uml-body .attr { margin: 0.15rem 0; }
+  .uml-body .ann { color: var(--accent); font-size: 0.75rem; }
+  .uml-footer {
+    border-top: 1px solid var(--border);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .badge {
+    font-size: 0.7rem; padding: 0.15rem 0.45rem; border-radius: 999px;
+    font-weight: 600;
+  }
+  .badge.owner { background: #7c2d12; color: #fdba74; }
+  .badge.inverse { background: #4c1d95; color: #c4b5fd; }
+  .badge.cascade { background: #064e3b; color: #6ee7b7; }
+
+  .rel-box {
+    background: #0f172a;
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+  .rel-box strong { color: var(--accent); }
+  .rel-line { margin: 0.4rem 0; }
+
+  /* ========== LIST / ARRAY VISUAL ========== */
+  .list-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .list-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+  }
+  .list-header .box {
+    background: #0ea5e9;
+    color: #0f172a;
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+  }
+  .qa-item {
+    display: grid;
+    grid-template-columns: 90px 1fr 1fr 1fr;
+    gap: 0.5rem;
+    align-items: stretch;
+    background: #0f172a;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+  }
+  .qa-item.stub { border-color: #64748b; opacity: 0.85; }
+  .qa-item.loaded { border-color: var(--ok); background: linear-gradient(90deg, #052e16 0%, #0f172a 40%); }
+  .qa-item .idx {
+    font-weight: 700;
+    color: var(--step);
+    display: flex;
+    align-items: center;
+  }
+  .qa-item .field {
+    background: #1e293b;
+    border-radius: 5px;
+    padding: 0.35rem 0.5rem;
+  }
+  .qa-item .field .label {
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .qa-item .field .value {
+    font-family: ui-monospace, monospace;
+    font-size: 0.78rem;
+  }
+  .qa-item .field.missing .value { color: var(--danger); }
+  .qa-item .field.ok .value { color: var(--ok); }
+
+  .empty-list {
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    padding: 1.4rem;
+    color: var(--muted);
+    text-align: center;
+    font-style: italic;
+  }
+
+  .arrow { text-align: center; font-size: 1.4rem; color: var(--accent); margin: 0.7rem 0; }
+
+  /* ========== STEPS ========== */
+  .steps { counter-reset: step; }
+  .step {
+    position: relative;
+    padding-left: 3rem;
+    margin-bottom: 1.5rem;
+  }
+  .step::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute; left: 0; top: 0;
+    width: 2rem; height: 2rem;
+    background: var(--step); color: #0f172a;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.95rem;
+  }
+  .step h3 { color: var(--accent); font-size: 1.05rem; margin-bottom: 0.4rem; }
+  .step pre {
+    background: #020617;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    overflow-x: auto;
+    font-size: 0.8rem;
+    margin: 0.6rem 0;
+  }
+  .step .why {
+    background: #1e293b;
+    border-left: 3px solid var(--accent);
+    padding: 0.6rem 0.9rem;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .step .why strong { color: var(--text); }
+
+  .final-note {
+    background: linear-gradient(90deg, #064e3b, #1e3a5f);
+    border: 1px solid var(--cascade);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+  }
+  .final-note strong { color: var(--cascade); }
+
+  code { background: #020617; padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.85em; }
+</style>
+</head>
+<body>
+
+<h1>AssessmentView – Rebuild Q&amp;A List</h1>
+<p class="subtitle">
+  Visual walkthrough of the service method that rebuilds the bidirectional association<br>
+  so both sides point to each other (owning side + inverse side).
+</p>
+
+<!-- ===================== UML ===================== -->
+<section>
+  <h2>1. Class Diagram – Cardinality, Owner &amp; JPA</h2>
+
+  <div class="legend">
+    <span><span class="dot owner"></span> Owning side (holds the FK)</span>
+    <span><span class="dot inverse"></span> Inverse side (mappedBy)</span>
+    <span><span class="dot cascade"></span> Cascade / Composition</span>
+    <span><span class="dot assoc"></span> Association (must already exist)</span>
+  </div>
+
+  <div class="uml-grid">
+    <!-- AssessmentView -->
+    <div class="uml inverse-side">
+      <div class="uml-header">
+        <span>AssessmentView</span>
+        <span class="badge inverse">INVERSE</span>
+      </div>
+      <div class="uml-body">
+        <div class="attr">- id : String</div>
+        <div class="attr">- customer : Customer</div>
+        <div class="attr">- profile : CustomerProfile</div>
+        <div class="attr">- timestamp : Instant</div>
+        <div class="attr">- qtyQuestions : int</div>
+        <div class="attr" style="margin-top:0.5rem;color:var(--inverse)">
+          <span class="ann">@OneToMany(mappedBy="assessmentView",</span><br>
+          <span class="ann">&nbsp;&nbsp;cascade=ALL, fetch=LAZY)</span><br>
+          <span class="ann">@JsonProperty(WRITE_ONLY)</span><br>
+          questionsAndAnswers : List&lt;QuestionAndAnswer&gt;
+        </div>
+      </div>
+      <div class="uml-footer">
+        Aggregate root · inverse side of 1‥* Q&amp;A
+      </div>
+    </div>
+    <!-- QuestionAndAnswer -->
+    <div class="uml owner-side">
+      <div class="uml-header">
+        <span>QuestionAndAnswer</span>
+        <span class="badge owner">OWNING</span>
+      </div>
+      <div class="uml-body">
+        <div class="attr">- id : String</div>
+        <div class="attr">- scoreContribution : Double</div>
+        <div class="attr" style="margin-top:0.5rem">
+          <span class="ann">@ManyToOne</span><br>
+          <span class="ann">@JoinColumn(name="question_id")</span><br>
+          question : Question <span style="color:#60a5fa">(assoc)</span>
+        </div>
+        <div class="attr" style="margin-top:0.4rem">
+          <span class="ann">@OneToOne(cascade=ALL, orphanRemoval)</span><br>
+          <span class="ann">@JoinColumn(name="answer_id")</span><br>
+          answer : Answer <span style="color:var(--cascade)">(comp)</span>
+        </div>
+        <div class="attr" style="margin-top:0.4rem;color:var(--owner)">
+          <span class="ann">@ManyToOne</span><br>
+          <span class="ann">@JoinColumn(name="assessment_view_id")</span><br>
+          <span class="ann">@JsonIgnore</span><br>
+          assessmentView : AssessmentView
+        </div>
+      </div>
+      <div class="uml-footer">
+        Owning side · holds FK assessment_view_id
+      </div>
+    </div>
+    <!-- Question -->
+    <div class="uml" style="border-color:#60a5fa">
+      <div class="uml-header">
+        <span>Question</span>
+        <span class="badge" style="background:#1e3a8a;color:#93c5fd">ASSOC</span>
+      </div>
+      <div class="uml-body">
+        <div class="attr">- id : String</div>
+        <div class="attr">- text, dimension, order, weight …</div>
+      </div>
+      <div class="uml-footer">
+        Must already exist · referenced by id only
+      </div>
+    </div>
+    <!-- Answer -->
+    <div class="uml" style="border-color:var(--cascade)">
+      <div class="uml-header">
+        <span>Answer</span>
+        <span class="badge cascade">COMPOSITION</span>
+      </div>
+      <div class="uml-body">
+        <div class="attr">- id : String</div>
+        <div class="attr">- value : Boolean</div>
+      </div>
+      <div class="uml-footer">
+        Owned by Q&amp;A · cascade + orphanRemoval
+      </div>
+    </div>
+
+  </div>
+
+  <div class="rel-box">
+    <div class="rel-line"><strong>Cardinality</strong></div>
+    <div class="rel-line">AssessmentView <strong>1</strong> ──── <strong>*</strong> QuestionAndAnswer &nbsp;(composition, cascade ALL)</div>
+    <div class="rel-line">QuestionAndAnswer <strong>*</strong> ──── <strong>1</strong> Question &nbsp;(association – load by id)</div>
+    <div class="rel-line">QuestionAndAnswer <strong>1</strong> ──── <strong>0‥1</strong> Answer &nbsp;(composition, cascade ALL + orphanRemoval)</div>
+    <br>
+    <div class="rel-line"><strong>Why the rebuild is mandatory</strong></div>
+    <div class="rel-line">
+      Because <code>QuestionAndAnswer</code> is the <span style="color:var(--owner)">owning side</span>,
+      Hibernate only looks at <code>questionAndAnswer.assessmentView</code> when writing the FK.
+      The collection on AssessmentView is ignored for persistence.
+      → We must call <code>addQuestionAndAnswer()</code> so both sides are set.
+    </div>
+  </div>
+</section>
+
+<!-- ===================== LIST VISUAL ===================== -->
+<section>
+  <h2>2. The List – Three States</h2>
+  <p style="color:var(--muted);margin-bottom:1rem;font-size:0.95rem">
+    Visual representation of the <code>List&lt;QuestionAndAnswer&gt;</code> as it is processed.
+  </p>
+
+  <!-- STATE 1 -->
+  <div class="card">
+    <div class="list-header">
+      <span class="box">INCOMING</span>
+      <span>Client JSON → stubs only</span>
+    </div>
+    <div class="list-visual">
+      <div class="qa-item stub">
+        <div class="idx">[0]</div>
+        <div class="field missing">
+          <div class="label">Q&amp;A id</div>
+          <div class="value">null</div>
+        </div>
+        <div class="field">
+          <div class="label">Question</div>
+          <div class="value">stub { id only }</div>
+        </div>
+        <div class="field">
+          <div class="label">Answer</div>
+          <div class="value">value = true / false</div>
+        </div>
+      </div>
+      <div class="qa-item stub">
+        <div class="idx">[1]</div>
+        <div class="field missing">
+          <div class="label">Q&amp;A id</div>
+          <div class="value">null</div>
+        </div>
+        <div class="field">
+          <div class="label">Question</div>
+          <div class="value">stub { id only }</div>
+        </div>
+        <div class="field">
+          <div class="label">Answer</div>
+          <div class="value">value = true / false</div>
+        </div>
+      </div>
+      <div class="qa-item stub">
+        <div class="idx">[2]</div>
+        <div class="field missing">
+          <div class="label">Q&amp;A id</div>
+          <div class="value">null</div>
+        </div>
+        <div class="field">
+          <div class="label">Question</div>
+          <div class="value">stub { id only }</div>
+        </div>
+        <div class="field">
+          <div class="label">Answer</div>
+          <div class="value">value = true / false</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow">↓ defensive copy + clear the collection</div>
+
+  <!-- STATE 2 -->
+  <div class="card">
+    <div class="list-header">
+      <span class="box" style="background:#f87171;color:#0f172a">CLEARED</span>
+      <span>assessmentView.setQuestionsAndAnswers(new ArrayList&lt;&gt;())</span>
+    </div>
+    <div class="empty-list">
+      Empty list — no elements yet.<br>
+      Ready to be rebuilt with fully managed entities.
+    </div>
+  </div>
+
+  <div class="arrow">↓ for each item → generate ids, load Question, call helper</div>
+
+  <!-- STATE 3 -->
+  <div class="card">
+    <div class="list-header">
+      <span class="box" style="background:#4ade80;color:#0f172a">REBUILT</span>
+      <span>Both sides of the association are now set</span>
+    </div>
+    <div class="list-visual">
+      <div class="qa-item loaded">
+        <div class="idx">[0]</div>
+        <div class="field ok">
+          <div class="label">Q&amp;A id</div>
+          <div class="value">UUID generated</div>
+        </div>
+        <div class="field ok">
+          <div class="label">Question</div>
+          <div class="value">loaded from DB</div>
+        </div>
+        <div class="field ok">
+          <div class="label">Answer + back-ref</div>
+          <div class="value">id set · → assessmentView</div>
+        </div>
+      </div>
+      <div class="qa-item loaded">
+        <div class="idx">[1]</div>
+        <div class="field ok">
+          <div class="label">Q&amp;A id</div>
+          <div class="value">UUID generated</div>
+        </div>
+        <div class="field ok">
+          <div class="label">Question</div>
+          <div class="value">loaded from DB</div>
+        </div>
+        <div class="field ok">
+          <div class="label">Answer + back-ref</div>
+          <div class="value">id set · → assessmentView</div>
+        </div>
+      </div>
+      <div class="qa-item loaded">
+        <div class="idx">[2]</div>
+        <div class="field ok">
+          <div class="label">Q&amp;A id</div>
+          <div class="value">UUID generated</div>
+        </div>
+        <div class="field ok">
+          <div class="label">Question</div>
+          <div class="value">loaded from DB</div>
+        </div>
+        <div class="field ok">
+          <div class="label">Answer + back-ref</div>
+          <div class="value">id set · → assessmentView</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STEP BY STEP ===================== -->
+<section>
+  <h2>3. Code – Block by Block</h2>
+  <div class="steps">
+
+    <!-- Step 1 -->
+    <div class="step">
+      <h3>Defensive copy of the incoming list</h3>
+      <pre>List&lt;QuestionAndAnswer&gt; incoming = assessmentView.getQuestionsAndAnswers() == null
+        ? new ArrayList&lt;&gt;()
+        : new ArrayList&lt;&gt;(assessmentView.getQuestionsAndAnswers());</pre>
+      <div class="why">
+        <strong>Why?</strong> We need a stable snapshot of whatever the client sent.
+        If the list is null we start with an empty one (safe for the for-loop).
+        A new ArrayList avoids ConcurrentModification problems when we later clear the original collection.
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step">
+      <h3>Clear the collection on the aggregate root</h3>
+      <pre>assessmentView.setQuestionsAndAnswers(new ArrayList&lt;&gt;());</pre>
+      <div class="why">
+        <strong>Why?</strong> We are about to rebuild the list from scratch with properly managed entities.
+        Starting from an empty collection guarantees that only the elements we explicitly add (via the helper) will be present.
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step">
+      <h3>Loop – generate a new primary key for each Q&amp;A</h3>
+      <pre>for (QuestionAndAnswer questionAndAnswer : incoming) {
+    questionAndAnswer.setId(UUID.randomUUID().toString());</pre>
+      <div class="why">
+        <strong>Why?</strong> Every QuestionAndAnswer is a brand-new entity created by this request.
+        The client never supplies its id (same pattern as AssessmentView itself).
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step">
+      <h3>Validate that a Question id was provided</h3>
+      <pre>    if (questionAndAnswer.getQuestion() == null
+            || questionAndAnswer.getQuestion().getId() == null) {
+        throw new IllegalArgumentException(
+            "QuestionAndAnswer requires an existing question id");
+    }</pre>
+      <div class="why">
+        <strong>Why?</strong> Question is an <em>association</em>, not a composition.
+        The client must reference an already-persisted Question by id.
+        Missing id → hard fail with a clear message.
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step">
+      <h3>Replace the stub Question with the real managed entity</h3>
+      <pre>    String questionId = questionAndAnswer.getQuestion().getId();
+    questionAndAnswer.setQuestion(
+        questionRepository.findById(questionId)
+            .orElseThrow(() -> new IllegalArgumentException(
+                "Question not found: " + questionId)));</pre>
+      <div class="why">
+        <strong>Why?</strong> The JSON only contains <code>{"id": "..."}</code>.
+        Hibernate needs a managed entity reference; otherwise it would try to insert a new (incomplete) Question.
+        Unknown id → exception.
+      </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="step">
+      <h3>Ensure the Answer (composition) has an id</h3>
+      <pre>    if (questionAndAnswer.getAnswer() != null
+            && questionAndAnswer.getAnswer().getId() == null) {
+        questionAndAnswer.getAnswer().setId(UUID.randomUUID().toString());
+    }</pre>
+      <div class="why">
+        <strong>Why?</strong> Answer is owned by the Q&amp;A (cascade ALL + orphanRemoval).
+        It is created together with the Q&amp;A, so we generate its primary key if the client omitted it.
+      </div>
+    </div>
+
+    <!-- Step 7 -->
+    <div class="step">
+      <h3>Add via the helper – the critical bidirectional link</h3>
+      <pre>    assessmentView.addQuestionAndAnswer(questionAndAnswer);
+}</pre>
+      <div class="why">
+        <strong>Why this is the key line?</strong><br>
+        <code>addQuestionAndAnswer</code> does two things:
+        <ol style="margin:0.4rem 0 0 1.2rem">
+          <li>Adds the Q&amp;A to the collection (inverse side).</li>
+          <li>Sets <code>questionAndAnswer.setAssessmentView(this)</code> (owning side).</li>
+        </ol>
+        Without step 2 the foreign-key column <code>assessment_view_id</code> would be saved as <strong>NULL</strong>.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== FINAL ===================== -->
+<section>
+  <h2>4. The FK problem &amp; how the helper solves it</h2>
+
+  <p style="color:var(--muted);margin-bottom:1rem;font-size:0.95rem">
+    In a bidirectional association the <strong style="color:var(--owner)">many side</strong> owns the foreign key.
+    Hibernate only looks at the field annotated with <code>@JoinColumn</code> when writing the database row.
+  </p>
+
+  <!-- BEFORE -->
+  <div class="card" style="border-color:var(--danger)">
+    <div class="list-header">
+      <span class="box" style="background:var(--danger);color:#0f172a">BEFORE helper</span>
+      <span>Only the inverse collection is populated</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:center;margin-top:0.8rem">
+      <div style="background:#0f172a;border:1px solid var(--border);border-radius:8px;padding:0.8rem;font-size:0.82rem">
+        <div style="color:var(--inverse);font-weight:600;margin-bottom:0.4rem">AssessmentView (1)</div>
+        <div style="font-family:ui-monospace,monospace;font-size:0.78rem">
+          questionsAndAnswers = [ qa0, qa1, qa2 ]
+        </div>
+        <div style="color:var(--muted);font-size:0.75rem;margin-top:0.4rem">
+          inverse side · mappedBy · <em>ignored by Hibernate for FK</em>
+        </div>
+      </div>
+
+      <div style="text-align:center;color:var(--muted);font-size:0.85rem">
+        1 ─── *
+      </div>
+
+      <div style="background:#0f172a;border:1px solid var(--danger);border-radius:8px;padding:0.8rem;font-size:0.82rem">
+        <div style="color:var(--owner);font-weight:600;margin-bottom:0.4rem">QuestionAndAnswer (*)</div>
+        <div style="font-family:ui-monospace,monospace;font-size:0.78rem;color:var(--danger)">
+          assessmentView = <strong>null</strong>
+        </div>
+        <div style="color:var(--muted);font-size:0.75rem;margin-top:0.4rem">
+          owning side · holds the FK column
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:1rem;background:#1c1917;border-left:3px solid var(--danger);padding:0.7rem 0.9rem;font-size:0.88rem">
+      <strong style="color:var(--danger)">Result if we saved now</strong><br>
+      <code>INSERT INTO question_and_answer (..., assessment_view_id) VALUES (..., <span style="color:var(--danger)">NULL</span>)</code><br>
+      The many-side rows would be orphaned — no link back to the AssessmentView.
+    </div>
+  </div>
+
+  <div class="arrow">↓ assessmentView.addQuestionAndAnswer(qa)</div>
+
+  <!-- AFTER -->
+  <div class="card" style="border-color:var(--ok)">
+    <div class="list-header">
+      <span class="box" style="background:var(--ok);color:#0f172a">AFTER helper</span>
+      <span>Both sides are set — FK is ready</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:center;margin-top:0.8rem">
+      <div style="background:#0f172a;border:1px solid var(--ok);border-radius:8px;padding:0.8rem;font-size:0.82rem">
+        <div style="color:var(--inverse);font-weight:600;margin-bottom:0.4rem">AssessmentView (1)</div>
+        <div style="font-family:ui-monospace,monospace;font-size:0.78rem">
+          questionsAndAnswers = [ qa0, qa1, qa2 ]
+        </div>
+        <div style="color:var(--muted);font-size:0.75rem;margin-top:0.4rem">
+          inverse side · collection updated
+        </div>
+      </div>
+
+      <div style="text-align:center;color:var(--ok);font-size:0.85rem;font-weight:600">
+        1 ⟷ *
+      </div>
+
+      <div style="background:#0f172a;border:1px solid var(--ok);border-radius:8px;padding:0.8rem;font-size:0.82rem">
+        <div style="color:var(--owner);font-weight:600;margin-bottom:0.4rem">QuestionAndAnswer (*)</div>
+        <div style="font-family:ui-monospace,monospace;font-size:0.78rem;color:var(--ok)">
+          assessmentView = <strong>this</strong>
+        </div>
+        <div style="color:var(--muted);font-size:0.75rem;margin-top:0.4rem">
+          owning side · FK field now points to parent
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:1rem;background:#052e16;border-left:3px solid var(--ok);padding:0.7rem 0.9rem;font-size:0.88rem">
+      <strong style="color:var(--ok)">What the helper does</strong>
+      <pre style="background:transparent;border:none;padding:0.4rem 0 0;margin:0;font-size:0.8rem;color:var(--text)">public void addQuestionAndAnswer(QuestionAndAnswer qa) {
+    this.questionsAndAnswers.add(qa);   // 1. inverse side
+    qa.setAssessmentView(this);         // 2. owning side  ← sets the FK
+}</pre>
+      Now Hibernate will write the correct value into the <code>assessment_view_id</code> column.
+    </div>
+  </div>
+
+  <!-- Save note -->
+  <div class="final-note" style="margin-top:1.2rem">
+    <p>
+      After the loop, <strong>qtyQuestions</strong> is set to the size of the rebuilt list<br>
+      and a single <code>assessmentViewRepository.save(assessmentView)</code> is called.
+    </p>
+    <p style="margin-top:0.6rem">
+      Because of <code>CascadeType.ALL</code> on both the OneToMany and the OneToOne,
+      every QuestionAndAnswer and every Answer is persisted in the same transaction.
+      The owning-side FK is correctly populated thanks to the helper method.
+    </p>
+  </div>
+</section>
+
+<p style="text-align:center;color:var(--muted);font-size:0.8rem;margin-top:2rem">
+  Diagram for the CompassMap AssessmentView service · based on assessmentview-rest-v2.md
+</p>
+
+</body>
+</html>
