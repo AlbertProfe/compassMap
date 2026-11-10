@@ -9,12 +9,21 @@ This document describes the **frontend** of compassMap. The application is in th
 
 ### References
 
+Last courses references:
+
+- [React days at a glance](https://diagrammersamples.s3.eu-central-1.amazonaws.com/ifcd0210-26-react-days.html)
+- [ApartmentPredictor-React](https://github.com/AlbertProfe/ApartmentPredictor-React) — related React frontend reference
+- [ApartmentPredictor](https://github.com/AlbertProfe/ApartmentPredictor) — related application/backend reference
+
+Versions, official documentation and dependencies:
+
 - [React documentation](https://react.dev/)
 - [ESLint React plugin (`@eslint-react/eslint-plugin`)](https://www.npmjs.com/package/@eslint-react/eslint-plugin)
 - [Vite documentation](https://vite.dev/guide/)
 - [Axios documentation](https://axios-http.com/docs/intro)
-- [ApartmentPredictor-React](https://github.com/AlbertProfe/ApartmentPredictor-React) — related React frontend reference
-- [ApartmentPredictor](https://github.com/AlbertProfe/ApartmentPredictor) — related application/backend reference
+
+Backend:
+
 - [compassMap backend masterDoc v1](./compassMap_v1.md) / [v2](./compassMap_v2.md)
 - [compassMap fullstack README](../README.md)
 
