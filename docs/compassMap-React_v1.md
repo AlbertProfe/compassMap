@@ -154,7 +154,38 @@ main.jsx
 
 ## npm and install
 
-Prerequisites: install Node.js and npm. From the repository root:
+### Install Node.js with nvm
+
+Use [nvm (Node Version Manager)](https://github.com/nvm-sh/nvm) to install and switch between Node.js versions for different projects. This avoids relying on one system-wide Node version, which may be outdated for a project or may change when the operating system or package manager is updated. It also helps avoid PATH confusion and permission problems that can happen when system-installed Node and globally installed npm packages are mixed with project tooling.
+
+On Linux or macOS, install nvm using its official install script. Check the [nvm installation instructions](https://github.com/nvm-sh/nvm#installing-and-updating) for the latest release command:
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+```
+
+Close and reopen the terminal, then verify that nvm is available:
+
+```bash
+command -v nvm
+```
+
+Install and select Node.js 22 for this project, then confirm the installed versions:
+
+```bash
+nvm install 22
+nvm use 22
+node --version
+npm --version
+```
+
+Vite 8 requires a modern Node.js version; use Node.js 22.12 or newer. If the shell does not recognize `nvm`, follow the nvm documentation to configure it in the shell startup file, then open a new terminal.
+
+> **Development setup note:** Switching Node versions has historically been a source of avoidable setup friction: a project works in one terminal but not another, a global `vite` or other CLI uses a different Node installation, or changing the system Node breaks another project. Use nvm to choose the runtime per project, and prefer the project-local npm scripts (`npm run dev`, `npm run build`, `npm run lint`) over globally installed tools.
+
+### Install dependencies and run
+
+From the repository root:
 
 ```bash
 cd compassMap-React
