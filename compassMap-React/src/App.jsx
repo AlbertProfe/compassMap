@@ -12,7 +12,7 @@ export default function App() {
   useEffect(() => {
     const fetchBooks = async () => {
       const response = await axios.get(
-        "https://openlibrary.org/search.json?q=the+lord+of+the+rings&limit=100",
+        "https://openlibrary.org/search.json?q=to+the+lighthouse&limit=100",
       );
       const booksData = response.data.docs;
       console.log(booksData);
