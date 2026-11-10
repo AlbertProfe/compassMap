@@ -21,6 +21,7 @@ Versions, official documentation and dependencies:
 - [ESLint React plugin (`@eslint-react/eslint-plugin`)](https://www.npmjs.com/package/@eslint-react/eslint-plugin)
 - [Vite documentation](https://vite.dev/guide/)
 - [Axios documentation](https://axios-http.com/docs/intro)
+- [Open Library Search API documentation](https://openlibrary.org/dev/docs/api/search)
 
 Backend:
 
