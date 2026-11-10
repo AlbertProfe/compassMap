@@ -1,66 +1,58 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import CompassMap from './CompassMap.jsx';
+import OpenLibrary from './OpenLibrary.jsx';
 import './App.css';
-import heroImg from './assets/hero.png';
+import heroImg from "./assets/hero.png";
 
 export default function App() {
-  const [count, setCount] = useState(0)
-
-  const [books, setBooks] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchBooks = async () => {
-      const response = await axios.get(
-        "https://openlibrary.org/search.json?q=to+the+lighthouse&limit=100",
-      );
-      const booksData = response.data.docs;
-      console.log(booksData);
-      setBooks(booksData);
-      setIsLoading(false);
-    };
-    fetchBooks();
-  }, []);
-
+  const [activeView, setActiveView] = useState('openlibrary');
+  const [count, setCount] = useState(0);
+  
   return (
-    <div>
+    <main className="app">
+      <h1>CompassMap React</h1>
       <div className="hero">
         <img src={heroImg} className="base" width="170" height="179" alt="" />
       </div>
-      <div>
-        <h1>CompassMap React</h1>
-        <p>This is a React project bootstrapped</p>
-        <p> with Vite to render the Spring Boot CompassMap application.</p>
-        <p>
-          The project is configured to use <b>React 18</b> and <b>Vite</b>
-        </p>
-        <p>for fast development and optimized builds.</p>
-      </div>
-      <hr/>
+      <p>
+        This is a React project bootstrapped with Vite to render the Spring Boot
+        CompassMap application.
+      </p>
+      <p>
+        The project is configured to use <b>React 18</b> and <b>Vite</b> for
+        fast development and optimized builds.
+      </p>
+      <hr />
       <h2>Hook: useState</h2>
       <div className="card">
         <button
           type="button"
           className="counter"
-          onClick={() => setCount((count) => count + 1)}
+          onClick={() => setCount((currentCount) => currentCount + 1)}
         >
           Count is {count}
         </button>
       </div>
-      <hr/>
-      <h2>Books</h2>
-      {isLoading ? (
-        <p>Loading books...</p>
-      ) : (
-        <p>
-          {books.map((book) => (
-            <p key={book.key}>
-              <strong>{book.title}</strong> by {book.author_name?.join(", ")}
-            </p>
-          ))}
-        </p>
-      )}
-    </div>
+      <hr />
+      <nav className="view-switcher" aria-label="Choose a view">
+        <button
+          type="button"
+          className={`view-button${activeView === "openlibrary" ? " active" : ""}`}
+          aria-pressed={activeView === "openlibrary"}
+          onClick={() => setActiveView("openlibrary")}
+        >
+          OpenLibrary
+        </button>
+        <button
+          type="button"
+          className={`view-button${activeView === "compassmap" ? " active" : ""}`}
+          aria-pressed={activeView === "compassmap"}
+          onClick={() => setActiveView("compassmap")}
+        >
+          CompassMap
+        </button>
+      </nav>
+      {activeView === "openlibrary" ? <OpenLibrary /> : <CompassMap />}
+    </main>
   );
 }
-
