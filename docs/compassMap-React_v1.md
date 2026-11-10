@@ -73,9 +73,9 @@ The current demo does not call those resources; it currently displays a counter 
 
 `src/App.jsx` uses Axios inside a React `useEffect` to send a `GET` request to the Open Library search API for *The Lord of the Rings* (up to 100 results). It stores the returned `docs` in component state and renders each book's title and author names. A loading message is shown until the request completes.
 
-This request is a demo and is not compassMap data. No backend base URL or compassMap REST endpoint is currently configured in the frontend. The backend API resources are documented in the [fullstack README](../README.md); connect the assessment UI to those endpoints when implementing the assessment flow.
+The OpenLibrary demo is available alongside the CompassMap assessment view. The assessment view requests `GET /api/v1/assessments/all`; during Vite development, that path is proxied to `http://localhost:8080`.
 
-The following backend API examples document the assessment data contract. They are not yet called by the current React demo. See the [Postman API documentation](https://documenter.getpostman.com/view/7473960/2sBYHSy1U9).
+The following backend API examples document the assessment data contract. The assessment-list example is used by the CompassMap view; the other examples are not yet called by the React demo. See the [Postman API documentation](https://documenter.getpostman.com/view/7473960/2sBYHSy1U9).
 
 In the examples, `{{base_url}}` is the API base URL, for example `http://localhost:8080/api/v1/`.
 
