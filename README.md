@@ -1,8 +1,10 @@
-# compassMap
+# compassMap Fullstack
 
-> **compassMap** is a Spring Boot backend that runs a self-assessment for a customer (questions & answers per dimension), computes a resulting `CustomerProfile` and recommends learning `RoadMap`s.
+> **compassMap** is a fullstack project: a Spring Boot backend that runs a self-assessment for a customer (questions & answers per dimension), computes a resulting `CustomerProfile` and recommends learning `RoadMap`s, plus a React frontend built with Vite.
 
 ## Tech stack
+
+**Backend** (`compassMap/`)
 
 - Java 21
 - Spring Boot 4 (Web MVC, Data JPA, Thymeleaf, DevTools)
@@ -10,11 +12,28 @@
 - Lombok, JavaFaker (data population)
 - Maven (wrapper included)
 
+**Frontend** (`compassMap-React/`)
+
+- React and React DOM `^19.3.1`
+- Axios `^1.21.0` (HTTP client)
+- Vite (dev server and build)
+
+## Monorepo
+
+This repository is a **monorepo**: the backend and the frontend live side by side in one Git repository, with one history and one set of branches. Each project keeps its own build tool, so you build and run them separately.
+
+- `compassMap/` is the Spring Boot backend, built with Maven.
+- `compassMap-React/` is the React frontend, built with npm and Vite.
+- `db/` and `docs/` are shared by both.
+
+One `git clone` gives you everything, and a single commit can change the API and the UI together.
+
 ## Repository structure
 
 | Folder | Content |
 |--------|---------|
 | `compassMap/` | Spring Boot project (`pom.xml`, `src/`) |
+| `compassMap-React/` | React frontend (Vite, `package.json`, `src/`) |
 | `db/` | H2 database files |
 | `docs/` | master docs, diagrams, mockups, appends |
 
@@ -110,10 +129,57 @@ cd compassMap
 ./mvnw test
 ```
 
+## Frontend: React
+
+The frontend lives in `compassMap-React/`. It is a React app created with Vite, and it uses Axios to fetch data (`src/App.jsx`).
+
+### Prerequisites
+
+- **Node.js** (LTS) and **npm** (check with `node -v` and `npm -v`)
+- **Git**
+
+### 1. Clone the repository
+
+If you already cloned it for the backend, skip this step.
+
+```bash
+git clone https://github.com/AlbertProfe/compassMap.git
+cd compassMap
+```
+
+### 2. Install the dependencies
+
+```bash
+cd compassMap-React
+npm install
+```
+
+### 3. Run it in development
+
+```bash
+npm run dev
+```
+
+Open <http://localhost:5173> (Vite's default port).
+
+### 4. Build and preview for production
+
+```bash
+npm run build     # output in dist/
+npm run preview   # serve the build locally
+```
+
+### 5. Lint
+
+```bash
+npm run lint
+```
+
 ## Documentation
 
 - [compassMap v1](docs/compassMap_v1.md)
 - [compassMap v2](docs/compassMap_v2.md)
+- [compassMap-React v1](docs/compassMap-React_v1.md)
 - [UML data model v2 (PDF)](https://github.com/AlbertProfe/compassMap/blob/master/docs/diagrams/data_model/v2/UML.pdf)
 - [Postman API documentation](https://documenter.getpostman.com/view/7473960/2sBYHSy1U9)
 - [Commits](https://github.com/AlbertProfe/compassMap/commits/master/)
