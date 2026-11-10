@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fullstack mind map</title>
+<style>
+body{margin:0;background:radial-gradient(circle at 50% 45%,#1e293b,#0b1020 70%);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#e2e8f0;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+h1{font-size:1.1rem;letter-spacing:.2em;text-transform:uppercase;opacity:.7;margin:12px 0 0}
+svg{width:100%;max-width:1540px;height:auto}
+.link{opacity:.55;stroke-dasharray:6 6;animation:flow 30s linear infinite}
+.link.main{opacity:.85;stroke-dasharray:none}
+@keyframes flow{to{stroke-dashoffset:-300}}
+.node rect{fill:color-mix(in srgb,var(--c) 18%,#0f172a);stroke:var(--c);stroke-width:2;transition:.25s}
+.node text{text-anchor:middle;fill:#f8fafc;font-size:14px;pointer-events:none}
+.node.main rect{stroke-width:3;filter:drop-shadow(0 0 10px var(--c))}
+.node.main text{font-size:18px;font-weight:700}
+.node.sub rect{stroke-width:1.5}
+.node.sub text{font-size:11px}
+.node.root rect{fill:#f8fafc;stroke:#f8fafc;filter:drop-shadow(0 0 18px #94a3b8)}
+.node.root text{fill:#0f172a;font-size:22px;font-weight:800;letter-spacing:.08em}
+.node{cursor:default}
+.node:hover rect{fill:var(--c)}
+.node:hover text{fill:#0f172a}
+.legend{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:6px 0 14px;font-size:.85rem}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--c);margin-right:6px}
+@media (prefers-reduced-motion:reduce){.link{animation:none}}
+</style>
+</head>
+<body>
+<h1>Fullstack · mind map</h1>
+<svg viewBox="0 0 1540 800" role="img" aria-label="Fullstack mind map: React, API, Spring Boot, Project and AI">
+<path class="link main" d="M740,415 C532.5,415 532.5,245 325,245" stroke="#38bdf8" stroke-width="4" fill="none"/>
+<path class="link main" d="M740,415 C555.0,415 555.0,580 370,580" stroke="#f472b6" stroke-width="4" fill="none"/>
+<path class="link main" d="M740,415 C740.0,415 740.0,205 740,205" stroke="#a78bfa" stroke-width="4" fill="none"/>
+<path class="link main" d="M740,415 C912.5,415 912.5,245 1085,245" stroke="#4ade80" stroke-width="4" fill="none"/>
+<path class="link main" d="M740,415 C912.5,415 912.5,580 1085,580" stroke="#fbbf24" stroke-width="4" fill="none"/>
+<path class="link " d="M325,245 C245.0,245 245.0,95 165,95" stroke="#38bdf8" stroke-width="2" fill="none"/>
+<path class="link " d="M325,245 C305.0,245 305.0,85 285,85" stroke="#38bdf8" stroke-width="2" fill="none"/>
+<path class="link " d="M325,245 C407.5,245 407.5,100 490,100" stroke="#38bdf8" stroke-width="2" fill="none"/>
+<path class="link " d="M325,245 C415.0,245 415.0,220 505,220" stroke="#38bdf8" stroke-width="2" fill="none"/>
+<path class="link " d="M325,245 C345.0,245 345.0,365 365,365" stroke="#38bdf8" stroke-width="2" fill="none"/>
+<path class="link " d="M325,245 C235.0,245 235.0,315 145,315" stroke="#38bdf8" stroke-width="2" fill="none"/>
+<path class="link " d="M325,245 C197.5,245 197.5,220 70,220" stroke="#38bdf8" stroke-width="2" fill="none"/>
+<path class="link " d="M325,245 C255.0,245 255.0,170 185,170" stroke="#38bdf8" stroke-width="2" fill="none"/>
+<path class="link " d="M370,580 C295.0,580 295.0,515 220,515" stroke="#f472b6" stroke-width="2" fill="none"/>
+<path class="link " d="M220,515 C147.5,515 147.5,450 75,450" stroke="#f472b6" stroke-width="2" fill="none"/>
+<path class="link " d="M370,580 C435.0,580 435.0,500 500,500" stroke="#f472b6" stroke-width="2" fill="none"/>
+<path class="link " d="M370,580 C467.5,580 467.5,620 565,620" stroke="#f472b6" stroke-width="2" fill="none"/>
+<path class="link " d="M370,580 C317.5,580 317.5,700 265,700" stroke="#f472b6" stroke-width="2" fill="none"/>
+<path class="link " d="M370,580 C427.5,580 427.5,715 485,715" stroke="#f472b6" stroke-width="2" fill="none"/>
+<path class="link " d="M740,205 C780.0,205 780.0,95 820,95" stroke="#a78bfa" stroke-width="2" fill="none"/>
+<path class="link " d="M1085,245 C1055.0,245 1055.0,90 1025,90" stroke="#4ade80" stroke-width="2" fill="none"/>
+<path class="link " d="M1085,245 C1115.0,245 1115.0,95 1145,95" stroke="#4ade80" stroke-width="2" fill="none"/>
+<path class="link " d="M1085,245 C1172.5,245 1172.5,70 1260,70" stroke="#4ade80" stroke-width="2" fill="none"/>
+<path class="link " d="M1085,245 C1182.5,245 1182.5,165 1280,165" stroke="#4ade80" stroke-width="2" fill="none"/>
+<path class="link " d="M1085,245 C1210.0,245 1210.0,250 1335,250" stroke="#4ade80" stroke-width="2" fill="none"/>
+<path class="link " d="M1085,245 C1000.0,245 1000.0,200 915,200" stroke="#4ade80" stroke-width="2" fill="none"/>
+<path class="link " d="M1085,245 C1000.0,245 1000.0,330 915,330" stroke="#4ade80" stroke-width="2" fill="none"/>
+<path class="link " d="M1085,245 C1095.0,245 1095.0,360 1105,360" stroke="#4ade80" stroke-width="2" fill="none"/>
+<path class="link " d="M1085,580 C1167.5,580 1167.5,475 1250,475" stroke="#fbbf24" stroke-width="2" fill="none"/>
+<path class="link " d="M1085,580 C1217.5,580 1217.5,575 1350,575" stroke="#fbbf24" stroke-width="2" fill="none"/>
+<path class="link " d="M1085,580 C1172.5,580 1172.5,695 1260,695" stroke="#fbbf24" stroke-width="2" fill="none"/>
+<path class="link " d="M1085,580 C1085.0,580 1085.0,720 1085,720" stroke="#fbbf24" stroke-width="2" fill="none"/>
+<path class="link " d="M1085,580 C987.5,580 987.5,685 890,685" stroke="#fbbf24" stroke-width="2" fill="none"/>
+<path class="link " d="M1085,580 C980.0,580 980.0,510 875,510" stroke="#fbbf24" stroke-width="2" fill="none"/>
+<path class="link " d="M285,85 C321.5,85 321.5,40 358,40" stroke="#38bdf8" stroke-width="1.6" fill="none"/>
+<path class="link " d="M490,100 C565.0,100 565.0,28 640,28" stroke="#38bdf8" stroke-width="1.6" fill="none"/>
+<path class="link " d="M490,100 C572.5,100 572.5,68 655,68" stroke="#38bdf8" stroke-width="1.6" fill="none"/>
+<path class="link " d="M490,100 C572.5,100 572.5,108 655,108" stroke="#38bdf8" stroke-width="1.6" fill="none"/>
+<path class="link " d="M490,100 C565.0,100 565.0,148 640,148" stroke="#38bdf8" stroke-width="1.6" fill="none"/>
+<path class="link " d="M1260,70 C1335.0,70 1335.0,70 1410,70" stroke="#4ade80" stroke-width="1.6" fill="none"/>
+<path class="link " d="M1335,250 C1400.0,250 1400.0,200 1465,200" stroke="#4ade80" stroke-width="1.6" fill="none"/>
+<path class="link " d="M1335,250 C1395.0,250 1395.0,315 1455,315" stroke="#4ade80" stroke-width="1.6" fill="none"/>
+<path class="link " d="M1260,695 C1327.5,695 1327.5,705 1395,705" stroke="#fbbf24" stroke-width="1.6" fill="none"/>
+<g class="node main" style="--c:#38bdf8" transform="translate(325,245)"><rect x="-43.90" y="-23.0" width="87.80" height="46.0" rx="23.0"/><text y="5">REACT</text></g>
+<g class="node main" style="--c:#f472b6" transform="translate(370,580)"><rect x="-30.04" y="-23.0" width="60.08" height="46.0" rx="23.0"/><text y="5">API</text></g>
+<g class="node main" style="--c:#a78bfa" transform="translate(740,205)"><rect x="-30.00" y="-23.0" width="60.00" height="46.0" rx="23.0"/><text y="5">AI</text></g>
+<g class="node main" style="--c:#4ade80" transform="translate(1085,245)"><rect x="-72.07" y="-23.0" width="144.14" height="46.0" rx="23.0"/><text y="5">SPRING BOOT</text></g>
+<g class="node main" style="--c:#fbbf24" transform="translate(1085,580)"><rect x="-55.06" y="-23.0" width="110.12" height="46.0" rx="23.0"/><text y="5">PROJECT</text></g>
+<g class="node leaf" style="--c:#38bdf8" transform="translate(165,95)"><rect x="-30.00" y="-16.0" width="60.00" height="32.0" rx="16.0"/><text y="5">SPA</text></g>
+<g class="node leaf" style="--c:#38bdf8" transform="translate(285,85)"><rect x="-30.00" y="-16.0" width="60.00" height="32.0" rx="16.0"/><text y="5">CSS</text></g>
+<g class="node leaf" style="--c:#38bdf8" transform="translate(490,100)"><rect x="-35.60" y="-16.0" width="71.20" height="32.0" rx="16.0"/><text y="5">HOOKS</text></g>
+<g class="node leaf" style="--c:#38bdf8" transform="translate(505,220)"><rect x="-30.00" y="-16.0" width="60.00" height="32.0" rx="16.0"/><text y="5">VITE</text></g>
+<g class="node leaf" style="--c:#38bdf8" transform="translate(365,365)"><rect x="-33.92" y="-16.0" width="67.84" height="32.0" rx="16.0"/><text y="5">AXIOS</text></g>
+<g class="node leaf" style="--c:#38bdf8" transform="translate(145,315)"><rect x="-56.11" y="-16.0" width="112.22" height="32.0" rx="16.0"/><text y="5">Components</text></g>
+<g class="node leaf" style="--c:#38bdf8" transform="translate(70,220)"><rect x="-47.78" y="-16.0" width="95.56" height="32.0" rx="16.0"/><text y="5">JS ECMA6</text></g>
+<g class="node leaf" style="--c:#38bdf8" transform="translate(185,170)"><rect x="-30.00" y="-16.0" width="60.00" height="32.0" rx="16.0"/><text y="5">JSX</text></g>
+<g class="node leaf" style="--c:#f472b6" transform="translate(220,515)"><rect x="-31.68" y="-16.0" width="63.36" height="32.0" rx="16.0"/><text y="5">REST</text></g>
+<g class="node leaf" style="--c:#f472b6" transform="translate(75,450)"><rect x="-45.47" y="-16.0" width="90.94" height="32.0" rx="16.0"/><text y="5">POSTMAN</text></g>
+<g class="node leaf" style="--c:#f472b6" transform="translate(500,500)"><rect x="-31.68" y="-16.0" width="63.36" height="32.0" rx="16.0"/><text y="5">JSON</text></g>
+<g class="node leaf" style="--c:#f472b6" transform="translate(565,620)"><rect x="-31.68" y="-16.0" width="63.36" height="32.0" rx="16.0"/><text y="5">HTTP</text></g>
+<g class="node leaf" style="--c:#f472b6" transform="translate(265,700)"><rect x="-30.00" y="-16.0" width="60.00" height="32.0" rx="16.0"/><text y="5">WS</text></g>
+<g class="node leaf" style="--c:#f472b6" transform="translate(485,715)"><rect x="-42.32" y="-16.0" width="84.64" height="32.0" rx="16.0"/><text y="5">GraphQL</text></g>
+<g class="node leaf" style="--c:#a78bfa" transform="translate(820,95)"><rect x="-87.33" y="-16.0" width="174.66" height="32.0" rx="16.0"/><text y="5">AGENTIC programming</text></g>
+<g class="node leaf" style="--c:#4ade80" transform="translate(1025,90)"><rect x="-51.91" y="-16.0" width="103.82" height="32.0" rx="16.0"/><text y="5">BL SERVICE</text></g>
+<g class="node leaf" style="--c:#4ade80" transform="translate(1145,95)"><rect x="-30.00" y="-16.0" width="60.00" height="32.0" rx="16.0"/><text y="5">db</text></g>
+<g class="node leaf" style="--c:#4ade80" transform="translate(1260,70)"><rect x="-37.63" y="-16.0" width="75.26" height="32.0" rx="16.0"/><text y="5">MAVEN</text></g>
+<g class="node leaf" style="--c:#4ade80" transform="translate(1280,165)"><rect x="-30.00" y="-16.0" width="60.00" height="32.0" rx="16.0"/><text y="5">DDD</text></g>
+<g class="node leaf" style="--c:#4ade80" transform="translate(1335,250)"><rect x="-30.00" y="-16.0" width="60.00" height="32.0" rx="16.0"/><text y="5">JPA</text></g>
+<g class="node leaf" style="--c:#4ade80" transform="translate(915,200)"><rect x="-55.20" y="-16.0" width="110.40" height="32.0" rx="16.0"/><text y="5">annotations</text></g>
+<g class="node leaf" style="--c:#4ade80" transform="translate(915,330)"><rect x="-50.51" y="-16.0" width="101.02" height="32.0" rx="16.0"/><text y="5">Thymeleaf</text></g>
+<g class="node leaf" style="--c:#4ade80" transform="translate(1105,360)"><rect x="-89.36" y="-16.0" width="178.72" height="32.0" rx="16.0"/><text y="5">application.properties</text></g>
+<g class="node leaf" style="--c:#fbbf24" transform="translate(1250,475)"><rect x="-30.00" y="-16.0" width="60.00" height="32.0" rx="16.0"/><text y="5">GIT</text></g>
+<g class="node leaf" style="--c:#fbbf24" transform="translate(1350,575)"><rect x="-50.72" y="-16.0" width="101.44" height="32.0" rx="16.0"/><text y="5">Life-cycle</text></g>
+<g class="node leaf" style="--c:#fbbf24" transform="translate(1260,695)"><rect x="-31.68" y="-16.0" width="63.36" height="32.0" rx="16.0"/><text y="5">DOCs</text></g>
+<g class="node leaf" style="--c:#fbbf24" transform="translate(1085,720)"><rect x="-44.56" y="-16.0" width="89.12" height="32.0" rx="16.0"/><text y="5">Versions</text></g>
+<g class="node leaf" style="--c:#fbbf24" transform="translate(890,685)"><rect x="-39.52" y="-16.0" width="79.04" height="32.0" rx="16.0"/><text y="5">devOps</text></g>
+<g class="node leaf" style="--c:#fbbf24" transform="translate(875,510)"><rect x="-58.07" y="-16.0" width="116.14" height="32.0" rx="16.0"/><text y="5">deploy cloud</text></g>
+<g class="node sub" style="--c:#38bdf8" transform="translate(358,40)"><rect x="-24.00" y="-13.0" width="48.00" height="26.0" rx="13.0"/><text y="4">lib</text></g>
+<g class="node sub" style="--c:#38bdf8" transform="translate(640,28)"><rect x="-33.88" y="-13.0" width="67.76" height="26.0" rx="13.0"/><text y="4">useState</text></g>
+<g class="node sub" style="--c:#38bdf8" transform="translate(655,68)"><rect x="-40.04" y="-13.0" width="80.08" height="26.0" rx="13.0"/><text y="4">useContext</text></g>
+<g class="node sub" style="--c:#38bdf8" transform="translate(655,108)"><rect x="-36.08" y="-13.0" width="72.16" height="26.0" rx="13.0"/><text y="4">useEffect</text></g>
+<g class="node sub" style="--c:#38bdf8" transform="translate(640,148)"><rect x="-28.60" y="-13.0" width="57.20" height="26.0" rx="13.0"/><text y="4">useRef</text></g>
+<g class="node sub" style="--c:#4ade80" transform="translate(1410,70)"><rect x="-33.11" y="-13.0" width="66.22" height="26.0" rx="13.0"/><text y="4">pom.xml</text></g>
+<g class="node sub" style="--c:#4ade80" transform="translate(1465,200)"><rect x="-31.08" y="-13.0" width="62.15" height="26.0" rx="13.0"/><text y="4">@Entity</text></g>
+<g class="node sub" style="--c:#4ade80" transform="translate(1455,315)"><rect x="-47.74" y="-13.0" width="95.48" height="26.0" rx="13.0"/><text y="4">many to many</text></g>
+<g class="node sub" style="--c:#fbbf24" transform="translate(1395,705)"><rect x="-24.00" y="-13.0" width="48.00" height="26.0" rx="13.0"/><text y="4">md</text></g>
+<g class="node root" style="--c:#ffffff" transform="translate(740,415)"><rect x="-95.00" y="-27.0" width="190.00" height="54.0" rx="27.0"/><text y="5">FULLSTACK</text></g>
+</svg>
+<div class="legend"><span style="--c:#38bdf8">React</span><span style="--c:#f472b6">API</span><span style="--c:#4ade80">Spring Boot</span><span style="--c:#fbbf24">Project</span><span style="--c:#a78bfa">AI</span></div>
+</body>
+</html>
