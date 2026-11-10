@@ -10,8 +10,11 @@ This document describes the **frontend** of compassMap. The application is in th
 ### References
 
 - [React documentation](https://react.dev/)
+- [ESLint React plugin (`@eslint-react/eslint-plugin`)](https://www.npmjs.com/package/@eslint-react/eslint-plugin)
 - [Vite documentation](https://vite.dev/guide/)
 - [Axios documentation](https://axios-http.com/docs/intro)
+- [ApartmentPredictor-React](https://github.com/AlbertProfe/ApartmentPredictor-React) — related React frontend reference
+- [ApartmentPredictor](https://github.com/AlbertProfe/ApartmentPredictor) — related application/backend reference
 - [compassMap backend masterDoc v1](./compassMap_v1.md) / [v2](./compassMap_v2.md)
 - [compassMap fullstack README](../README.md)
 
@@ -104,9 +107,13 @@ npm run lint     # Run ESLint
 
 ## Tech Stack
 
-- React and React DOM `^19.3.1` for the user interface
-- Vite `^8.3.6` for development and production builds
-- Axios `^1.21.0` for the current Open Library HTTP request
+- **React and React DOM** `^19.3.1` for the user interface
+- **Vite** `^8.3.6` for development and production builds
+- **Axios** `^1.21.0` for the current Open Library HTTP request
 - JavaScript ES modules and JSX
-- ESLint `^10.14.0` with React Hooks and React Refresh plugins
-- Babel React Compiler plugin configured through the Vite React integration
+- **ESLint** `^10.14.0` with React Hooks and React Refresh plugins:
+  - React Hooks rules help catch incorrect Hook usage and apply recommended React-specific lint checks.
+  - React Refresh rules check that components are structured to support Vite's fast refresh during development.
+- **Babel React Compiler** plugin configured through the Vite React integration:
+  - The compiler analyzes React components and Hooks at build time and can automatically memoize eligible code, reducing the need to add manual memoization in common cases.
+  - The Vite configuration applies the React Compiler preset through the Babel plugin.
