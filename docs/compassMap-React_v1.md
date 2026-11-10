@@ -55,13 +55,81 @@ compassMap-React/
 
 ## CompassMap
 
-The frontend is intended to be the user-facing assessment application for the backend's customer, question-and-answer, customer-profile, roadmap, and assessment resources. The current demo does not call those resources; it currently displays a counter and a list of books.
+> The frontend is intended to be the user-facing assessment application for the backend's customer, question-and-answer, customer-profile, roadmap, and assessment resources. 
+
+The current demo does not call those resources; it currently displays a counter and a list of books.
 
 ### Data Axios
 
 `src/App.jsx` uses Axios inside a React `useEffect` to send a `GET` request to the Open Library search API for *The Lord of the Rings* (up to 100 results). It stores the returned `docs` in component state and renders each book's title and author names. A loading message is shown until the request completes.
 
 This request is a demo and is not compassMap data. No backend base URL or compassMap REST endpoint is currently configured in the frontend. The backend API resources are documented in the [fullstack README](../README.md); connect the assessment UI to those endpoints when implementing the assessment flow.
+
+The following backend API examples document the assessment data contract. They are not yet called by the current React demo. See the [Postman API documentation](https://documenter.getpostman.com/view/7473960/2sBYHSy1U9).
+
+In the examples, `{{base_url}}` is the API base URL, for example `http://localhost:8080/api/v1/`.
+
+**Send an assessment — `POST {{base_url}}assessments/create`**
+
+The customer, profile, and question IDs must refer to existing records. The service generates the assessment and answer IDs, timestamp, and question count.
+
+```json
+{
+  "customer": { "id": "26256f77-06ea-4c6e-bba3-4754bced74e8" },
+  "profile": { "id": "916933e0-70d5-4c52-9aa9-48840a01cc30" },
+  "questionsAndAnswers": [
+    {
+      "question": { "id": "7504a93c-a16c-4438-a140-4ae7dd326631" },
+      "answer": { "value": true },
+      "scoreContribution": 1.0
+    },
+    {
+      "question": { "id": "e0041c35-8a76-49af-8745-b9d0c128ebec" },
+      "answer": { "value": false },
+      "scoreContribution": 0.0
+    },
+    {
+      "question": { "id": "813ff44d-9e58-455c-908a-b2cac485c0f5" },
+      "answer": { "value": true },
+      "scoreContribution": 1.0
+    }
+  ]
+}
+```
+
+**GET all assessments — `GET {{base_url}}assessments/all`**
+
+The endpoint returns a JSON array. For example, a response containing one assessment:
+
+```json
+[
+  {
+    "id": "772bbca6-f336-4f70-ad4e-84dff6b3d512",
+    "customer": {
+      "id": "26256f77-06ea-4c6e-bba3-4754bced74e8",
+      "firstName": "Lashunda",
+      "lastName": "Jacobs",
+      "email": "rob.morar@gmail.com",
+      "phone": "381.238.9244 x55211",
+      "address": "Suite 901 874 Lucius Canyon, New Fredericachester, SC 13191"
+    },
+    "timestamp": "2026-11-05T10:00:17.959387592Z",
+    "qtyQuestions": 3,
+    "profile": {
+      "id": "916933e0-70d5-4c52-9aa9-48840a01cc30",
+      "codeProfile": "BEGINNER",
+      "name": "Beginner",
+      "description": "Wants to start learning programming from scratch",
+      "goal": "Learn basic programming concepts and build a first project",
+      "profileAnswers": {},
+      "customer": null,
+      "recommendedRoadmaps": []
+    }
+  }
+]
+```
+
+The response omits `questionsAndAnswers`; retrieve those separately with `GET {{base_url}}assessments/questionsAndAnswers?id=<assessment-id>`.
 
 ## Components
 
