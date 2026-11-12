@@ -67,6 +67,27 @@ java -jar target/demo-0.0.1-SNAPSHOT.jar
 
 Then open <http://localhost:8080>. Stop the application with `Ctrl+C`.
 
+## Running the JAR with a changed name
+
+The built JAR can be copied and renamed before running. For example, copying
+`demo-0.0.1-SNAPSHOT.jar` to `server.jar` and running it from any location:
+
+```bash
+java -jar server.jar
+```
+
+![Running a renamed JAR](devops/2026-11-12_10-47.png)
+
+The Spring Boot application starts normally regardless of the filename, as long
+as the file is a valid executable JAR. The logs confirm the application booted
+successfully:
+
+![Spring Boot startup from renamed JAR](devops/2026-11-12_10-49.png)
+
+This is useful for deployment scenarios where a short, stable name (e.g.
+`server.jar`) is preferred over the Maven-generated name that changes with each
+version bump.
+
 ## Build without running tests
 
 For a local build where tests should intentionally be skipped:
