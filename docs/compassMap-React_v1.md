@@ -46,7 +46,10 @@ The frontend is a separate npm/Vite application in this monorepo. Install depend
 
 #### v1.1 tinkering
 
-- [CompassMap-React Project Summary](./appends/compassMap-React-summary.md) — overview of the three JSX components, React patterns, and dependencies
+- [CompassMap-React Project Summary v1.1](./appends/compassMap-React-summary-v1.1.md) — overview of the three JSX components with conditional rendering, React patterns, and dependencies
+- [CompassMap-React Project Summary v1.2](./appends/compassMap-React-summary-v1.2.md) — current state with react-router-dom navigation, five page components, and updated React patterns
+
+[Github links](https://github.com/AlbertProfe/compassMap/blob/master/docs/appends/compassMap-React-summary-v1.1.md)
 
 ### Project structure
 
