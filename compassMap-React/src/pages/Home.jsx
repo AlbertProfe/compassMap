@@ -1,11 +1,14 @@
 
 import { useState } from 'react';
-import CompassMap from './CompassMap.jsx';
-import OpenLibrary from './OpenLibrary.jsx';
+import CompassMap from './Answers.jsx';
+import OpenLibrary from './Questions.jsx';
 import heroImg from "../assets/hero.png";
+import Answers from "./Answers.jsx";
+import Questions from "./Questions.jsx";
+
 
 export default function Home () {
-    const [activeView, setActiveView] = useState('openlibrary');
+    const [activeView, setActiveView] = useState('questions');
     const [count, setCount] = useState(0);
 
 
@@ -41,22 +44,22 @@ export default function Home () {
                 <nav className="view-switcher" aria-label="Choose a view">
                     <button
                         type="button"
-                        className={`view-button${activeView === "openlibrary" ? " active" : ""}`}
-                        aria-pressed={activeView === "openlibrary"}
-                        onClick={() => setActiveView("openlibrary")}
+                        className={`view-button${activeView === "questions" ? " active" : ""}`}
+                        aria-pressed={activeView === "questions"}
+                        onClick={() => setActiveView("questions")}
                     >
-                        OpenLibrary
+                        Questions
                     </button>
                     <button
                         type="button"
-                        className={`view-button${activeView === "compassmap" ? " active" : ""}`}
-                        aria-pressed={activeView === "compassmap"}
-                        onClick={() => setActiveView("compassmap")}
+                        className={`view-button${activeView === "answers" ? " active" : ""}`}
+                        aria-pressed={activeView === "answers"}
+                        onClick={() => setActiveView("answers")}
                     >
-                        CompassMap
+                        Answers
                     </button>
                 </nav>
-                {activeView === "openlibrary" ? <OpenLibrary /> : <CompassMap />}
+                {activeView === "questions" ? <Questions /> : <Answers />}
             </main>
 
         </section>
