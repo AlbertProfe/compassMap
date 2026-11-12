@@ -57,6 +57,24 @@ compassMap/target/demo-0.0.1-SNAPSHOT.jar
 The filename is based on the Maven `artifactId` and `version` in
 `compassMap/pom.xml`; it may change if either value changes.
 
+The build output shows the compilation progress, tests being skipped (when
+`-DskipTests` is used), and the Spring Boot repackaging step:
+
+![Maven build compiling source files](devops/2026-11-12_11-07.png)
+
+The `jar:3.5.1:jar` goal packages the application, and the output confirms the
+JAR file path:
+
+```
+[INFO] --- jar:3.5.1:jar (default-jar) @ demo ---
+[INFO] Building jar: /home/albert/MyProjects/SpringProjects/compassMap/compassMap/target/demo-0.0.1-SNAPSHOT.jar
+```
+
+The build finishes with a **BUILD SUCCESS** message, showing the total build
+time and the repackaged JAR artifact:
+
+![Maven build success](devops/2026-11-12_11-08.png)
+
 ## Run the packaged application
 
 From `compassMap/`, run:
