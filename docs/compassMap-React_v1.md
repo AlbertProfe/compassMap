@@ -44,6 +44,10 @@ The frontend is a separate npm/Vite application in this monorepo. Install depend
 - [Add Axios book fetching and display](https://github.com/AlbertProfe/compassMap/commit/9503dee)
 - [Frontend commit history](https://github.com/AlbertProfe/compassMap/commits/master/compassMap-React/)
 
+#### v1.1 tinkering
+
+- [CompassMap-React Project Summary](./appends/compassMap-React-summary.md) — overview of the three JSX components, React patterns, and dependencies
+
 ### Project structure
 
 The main application code and configuration are:
