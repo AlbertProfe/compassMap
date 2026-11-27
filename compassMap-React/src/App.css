@@ -124,6 +124,52 @@ nav a:focus-visible {
   overflow-wrap: anywhere;
 }
 
+.customer-select {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 1rem 0 1.5rem;
+}
+
+.customer-select select {
+  padding: 0.5rem;
+  font: inherit;
+}
+
+.question-list {
+  display: grid;
+  gap: 0.75rem;
+  padding-left: 1.5rem;
+}
+
+.question-list label {
+  margin-right: 1.25rem;
+  cursor: pointer;
+}
+
+.question-text {
+  margin: 0 0 0.5rem;
+  font-weight: 500;
+}
+
+.view-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.profile-result {
+  display: grid;
+  gap: 1rem;
+}
+
+.error-message {
+  padding: 0.75rem 1rem;
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
 @media (max-width: 600px) {
   .app {
     padding: 1rem;
