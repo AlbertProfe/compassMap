@@ -5,9 +5,12 @@ import com.example.demo.model.AssessmentView;
 import com.example.demo.model.QuestionAndAnswer;
 import com.example.demo.service.AssessmentViewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/assessments")
@@ -25,6 +28,21 @@ public class AssessmentViewRestController {
         AssessmentView newAssessmentView = assessmentViewService.createAssessmentView(assessmentView);
         System.out.println("Service createAssessmentView: " + newAssessmentView);
         return newAssessmentView;
+    }
+
+    // body: { "customer": {"id": "..."},
+    //         "questionsAndAnswers": [ {"question": {"id": "..."}, "answer": {"value": true}} ] }
+    @PostMapping("/submit")
+    public ResponseEntity<?> submitAssessment(@RequestBody AssessmentView assessmentView) {
+        try {
+            AssessmentView savedAssessmentView = assessmentViewService.submitAssessment(assessmentView);
+            System.out.println("Service submitAssessment: " + savedAssessmentView);
+            return ResponseEntity.ok(savedAssessmentView);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", e.getMessage()));
+        }
     }
 
     //----------------------------- GET -----------------------------

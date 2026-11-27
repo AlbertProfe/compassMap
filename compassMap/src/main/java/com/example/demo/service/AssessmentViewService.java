@@ -1,6 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.model.AssessmentView;
+import com.example.demo.model.CustomerProfile;
+import com.example.demo.model.Dimension;
+import com.example.demo.model.Question;
 import com.example.demo.model.QuestionAndAnswer;
 import com.example.demo.repository.AssessmentViewRepository;
 import com.example.demo.repository.CustomerProfileRepository;
@@ -116,6 +119,73 @@ public class AssessmentViewService {
         AssessmentView createdAssessmentView = assessmentViewRepository.save(assessmentView);
         System.out.println("Service created assessmentView: " + createdAssessmentView);
         return createdAssessmentView;
+    }
+
+    // compute the profile from the answers (KNOWS_CODE x WANTS_TO_LEARN) and save a new assessment
+    public AssessmentView submitAssessment(AssessmentView incoming) {
+        if (incoming.getCustomer() == null || incoming.getCustomer().getId() == null) {
+            throw new IllegalArgumentException("Customer id is required");
+        }
+        if (incoming.getQuestionsAndAnswers() == null || incoming.getQuestionsAndAnswers().isEmpty()) {
+            throw new IllegalArgumentException("questionsAndAnswers must not be empty");
+        }
+
+        double knowsCodeYes = 0.0, knowsCodeTotal = 0.0;
+        double wantsToLearnYes = 0.0, wantsToLearnTotal = 0.0;
+        boolean knowsCodeAnswered = false, wantsToLearnAnswered = false;
+
+        for (QuestionAndAnswer questionAndAnswer : incoming.getQuestionsAndAnswers()) {
+            if (questionAndAnswer.getQuestion() == null || questionAndAnswer.getQuestion().getId() == null) {
+                throw new IllegalArgumentException("Each answer requires a question id");
+            }
+            String questionId = questionAndAnswer.getQuestion().getId();
+            if (questionAndAnswer.getAnswer() == null || questionAndAnswer.getAnswer().getValue() == null) {
+                throw new IllegalArgumentException("Missing answer value for question: " + questionId);
+            }
+            Question question = questionRepository.findById(questionId)
+                    .orElseThrow(() -> new IllegalArgumentException("Question not found: " + questionId));
+
+            boolean value = questionAndAnswer.getAnswer().getValue();
+            double weight = question.getWeight();
+            questionAndAnswer.setScoreContribution(value ? weight : 0.0);
+
+            if (question.getDimension() == Dimension.KNOWS_CODE) {
+                knowsCodeAnswered = true;
+                knowsCodeTotal += weight;
+                if (value) knowsCodeYes += weight;
+            } else if (question.getDimension() == Dimension.WANTS_TO_LEARN) {
+                wantsToLearnAnswered = true;
+                wantsToLearnTotal += weight;
+                if (value) wantsToLearnYes += weight;
+            }
+        }
+
+        if (!knowsCodeAnswered) {
+            throw new IllegalArgumentException("No answer for dimension KNOWS_CODE");
+        }
+        if (!wantsToLearnAnswered) {
+            throw new IllegalArgumentException("No answer for dimension WANTS_TO_LEARN");
+        }
+
+        // weighted majority, a tie counts as yes
+        boolean knowsCode = knowsCodeYes >= knowsCodeTotal / 2;
+        boolean wantsToLearn = wantsToLearnYes >= wantsToLearnTotal / 2;
+
+        String profileId = resolveProfileId(knowsCode, wantsToLearn);
+        CustomerProfile profile = customerProfileRepository.findById(profileId)
+                .orElseThrow(() -> new IllegalStateException("CustomerProfile " + profileId + " not found: seed profiles.json first"));
+        System.out.println("Service submitAssessment profile: " + profile);
+
+        // shared profile is only referenced, never modified
+        incoming.setProfile(profile);
+        return createAssessmentView(incoming);
+    }
+
+    private String resolveProfileId(boolean knowsCode, boolean wantsToLearn) {
+        if (knowsCode && wantsToLearn) return "P01";
+        if (knowsCode) return "P02";
+        if (wantsToLearn) return "P03";
+        return "P04";
     }
 
     public AssessmentView getAssessmentViewById(String id) {
