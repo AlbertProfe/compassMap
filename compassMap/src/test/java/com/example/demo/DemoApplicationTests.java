@@ -262,4 +262,57 @@ class DemoApplicationTests {
 		customerService.deleteCustomer(customer.getId());
 	}
 
+	@Test
+	void submitAssessmentResolvesProfile() {
+
+		// ------------------------------------ PREPARE ------------------------------------
+		Customer customer = customerService.createCustomer(
+				Customer.builder().firstName("Test").lastName("Submit").build());
+
+		Question knowsCode = questionRepository.save(Question.builder()
+				.id(UUID.randomUUID().toString()).name("q-test-code")
+				.text("Have you written code before?")
+				.dimension(Dimension.KNOWS_CODE).order(1).weight(2.0).build());
+		Question wantsToLearn = questionRepository.save(Question.builder()
+				.id(UUID.randomUUID().toString()).name("q-test-learn")
+				.text("Do you want to learn to code?")
+				.dimension(Dimension.WANTS_TO_LEARN).order(2).weight(1.0).build());
+
+		// P02 is a shared profile: create it only if absent, delete only what we created
+		boolean createdP02 = !customerProfileRepository.existsById("P02");
+		if (createdP02) {
+			customerProfileRepository.save(CustomerProfile.builder()
+					.id("P02").codeProfile(CodeProfile.ARCHITECT)
+					.name("Use AI to create projects").build());
+		}
+
+		// only ids are sent, as the frontend does
+		AssessmentView incoming = AssessmentView.builder()
+				.customer(Customer.builder().id(customer.getId()).build())
+				.build();
+		incoming.getQuestionsAndAnswers().add(QuestionAndAnswer.builder()
+				.question(Question.builder().id(knowsCode.getId()).build())
+				.answer(Answer.builder().value(true).build()).build());
+		incoming.getQuestionsAndAnswers().add(QuestionAndAnswer.builder()
+				.question(Question.builder().id(wantsToLearn.getId()).build())
+				.answer(Answer.builder().value(false).build()).build());
+
+		AssessmentView created = assessmentViewService.submitAssessment(incoming);
+		System.out.println("AssessmentView submitted: " + created);
+
+		// ------------------------------------	ASSERTS ------------------------------------
+		try {
+			assertEquals("P02", created.getProfile().getId());
+			assertEquals(2, created.getQtyQuestions());
+			assertEquals(2.0, assessmentViewService.getTotalScore(created.getId()));
+		} finally {
+			// ------------------------------------	CLEAN UP ------------------------------------
+			assessmentViewService.deleteAssessmentView(created.getId());
+			if (createdP02) customerProfileRepository.deleteById("P02");
+			questionRepository.deleteById(knowsCode.getId());
+			questionRepository.deleteById(wantsToLearn.getId());
+			customerService.deleteCustomer(customer.getId());
+		}
+	}
+
 }
